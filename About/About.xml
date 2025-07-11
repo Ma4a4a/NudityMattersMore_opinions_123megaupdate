@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>Nudity Matters More opinions</name>
+    <author>shark510</author>
+	<packageId>shark510.nuditymattersmoreopinions</packageId>
+	<supportedVersions>
+		<li>1.5</li>
+	</supportedVersions>
+    <description>A patch mod for Dord's Nudity Matters More. Adds genitail opinions in nudity tab, makes custom opinions based on nudity interactions. Adds interaction bubbles if speakup and interaction bubbles mods are present.</description>
+	<modDependencies>
+		<li>
+			<packageId>rim.job.world</packageId>
+			<displayName>RJW</displayName>
+			<downloadUrl>https://gitgud.io/Ed86/rjw</downloadUrl>
+		</li>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>dord.nuditymattersmore</packageId>
+			<displayName>Nudity Matters More</displayName>
+			<downloadUrl>https://gitgud.io/dordheaven/nudity-matters-more.git</downloadUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>JPT.speakup</li>
+		<li>Jaxe.Bubbles</li>
+		<li>rim.job.world</li>
+		<li>Malistaticy.UnderWhere</li>
+		<li>VanillaExpanded.VanillaTraitsExpanded</li>
+		<li>Vegapnk.rjw.genes</li>
+		<li>abscon.privacy.please</li>
+		<li>dord.nuditymattersmore</li>
+	</loadAfter>
+</ModMetaData>
