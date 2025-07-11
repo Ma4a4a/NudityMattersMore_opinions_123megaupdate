@@ -22,6 +22,11 @@ A new button for the interaction log is available (toggleable with the Nnm log).
 
 Choosing "observe self" will display all opinions from pawns who have seen this pawn.
 
+Strong dependency:
+Harmony
+RJW
+Nudity Matters More
+
 Mod Integrations:
 Speak Up and Interaction Bubbles
 If these mods are installed, your pawns will vocalize what they saw or who saw them directly in-game, eliminating the need to constantly check the Nudity tab. New custom icons are provided for all interactions covered by Nnm.
