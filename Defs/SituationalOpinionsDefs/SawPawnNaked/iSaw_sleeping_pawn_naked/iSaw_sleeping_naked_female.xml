@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_female_PositiveDef">
+		<defName>iSaw_sleeping_naked_female_Positive</defName>
+        <label>iSaw_sleeping_naked_female_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>As I crept closer, my eyes locked onto {PAWN_nameShortPossessive} naked form, sprawled out before me like a canvas of unbridled intimacy, {PAWN_possessive} breasts rising and falling with each gentle breath, the subtle curve of {PAWN_possessive} hips framing the dark entrance of {PAWN_possessive} vagina and the enticing pucker of {PAWN_possessive} anus.</li>
+			<li>I was drawn to the sight of {PAWN_nameShort} sleeping naked, {PAWN_possessive} chest heaving softly, as my gaze wandered over the landscape of {PAWN_possessive} body, drinking in the sight of {PAWN_possessive} breasts, the slick folds of {PAWN_possessive} vagina, and the delicate shape of {PAWN_possessive} anus, all laid bare in a tantalizing display.</li>
+			<li>As I stood frozen, my eyes were irresistibly drawn to the tender contours of {PAWN_nameShortPossessive} breasts, the gentle swell of {PAWN_possessive} hips, and the secretive folds of {PAWN_possessive} vagina and anus, all on full, unabashed display in {PAWN_possessive} naked slumber.</li>
+			<li>My heart skipped a beat as I caught sight of {PAWN_nameShortPossessive} naked body, {PAWN_possessive} breasts jutting out like ripe fruit, {PAWN_possessive} hips splayed open in a posture of unconscious abandon, revealing the dark mysteries of {PAWN_possessive} vagina and anus to my prurient gaze.</li>
+			<li>I felt a shiver run down my spine as I took in the glory of {PAWN_nameShortPossessive} naked form, {PAWN_possessive} breasts rising like two pale moons, {PAWN_possessive} vagina and anus glowing with a soft, inviting luminescence, as if beckoning me to come closer.</li>
+			<li>My breath caught in my throat as I beheld {PAWN_nameShortPossessive} naked body, sprawled out before me in a picture of unselfconscious vulnerability, {PAWN_possessive} breasts, vagina, and anus all laid open to my gaze, like a forbidden fruit ripe for the plucking.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_female_NeutralDef">
+		<defName>iSaw_sleeping_naked_female_Neutral</defName>
+        <label>iSaw_sleeping_naked_female_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>As I gazed upon {PAWN_nameShortPossessive} slumbering form, I noticed that {PAWN_subjective} was lying completely naked, {PAWN_possessive} breasts splayed out to the sides, {PAWN_possessive} vagina and anus subtly visible in the dim light. I felt a faint flicker of curiosity, but mostly I just thought it was a typical Tuesday.</li>
+			<li>I found myself glancing over at {PAWN_nameShort}, who was fast asleep and completely exposed, {PAWN_possessive} nudity unwitnessed except by me. My eyes drifted over the curves of {PAWN_possessive} breasts, the slight swell of {PAWN_possessive} vulva, and the gentle pucker of {PAWN_possessive} anus, but my thoughts remained detached.</li>
+			<li>My gaze wandered to {PAWN_nameShort}, sprawled out on the bed like a limp doll, {PAWN_possessive} naked body unselfconsciously displayed. I observed the gentle rise and fall of {PAWN_possessive} breasts, the quiet cleft of {PAWN_possessive} vagina, and the delicate crease of {PAWN_possessive} anus with a detached air.</li>
+			<li>I noticed {PAWN_nameShort} was sleeping soundly, {PAWN_possessive} body bared to the elements, and my attention lightly touched on the contours of {PAWN_possessive} breasts, the soft folds of {PAWN_possessive} vagina, and the subtle outline of {PAWN_possessive} anus, but I didn't linger on the sight. My thoughts were elsewhere.</li>
+			<li>As I stood there, I took in the sight of {PAWN_nameShortPossessive} sleeping form, {PAWN_possessive} nudity unapologetic, and my eyes skirted over the curves of {PAWN_possessive} body, lingering for a moment on the swell of {PAWN_possessive} breasts, the slight indentation of {PAWN_possessive} navel, and the softness of {PAWN_possessive} vulva and anus. My expression remained impassive.</li>
+			<li>I caught sight of {PAWN_nameShortPossessive} exposed body, and my gaze ambled over the relaxed contours of {PAWN_possessive} figure, noting the breasts that lay softly on {PAWN_possessive} chest, the vaginal labia that gently folded in on themselves, and the anus that lay quietly closed. My thoughts were neutral, neither stirred nor unmoved by the sight.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_female_NegativeDef">
+		<defName>iSaw_sleeping_naked_female_Negative</defName>
+        <label>iSaw_sleeping_naked_female_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I chanced upon {PAWN_nameShort}, sprawled carelessly in {PAWN_possessive} sleep, {PAWN_possessive} body bared for all to see. {PAWN_possessive} feminine secrets, both front and back, were exposed to my gaze, while {PAWN_possessive} breasts lay flattened against the bed, a testament to {PAWN_possessive} state of undress.</li>
+			<li>Intruding upon {PAWN_nameShortPossessive} private moment, I found {PAWN_possessive} in a state of disrobement. {PAWN_possessive} vagina and anus were open to my view, while {PAWN_possessive} breasts, untamed by any clothing, were left exposed to the cool air.</li>
+			<li>As I entered the room, my eyes were drawn to {PAWN_nameShort}, who was fast asleep and devoid of any clothing. {PAWN_possessive} intimate areas were on full display, {PAWN_possessive} breasts unaffected by the constraints of fabric.</li>
+			<li>I stumbled upon {PAWN_nameShort} in {PAWN_possessive} most vulnerable state, naked and exposed. {PAWN_possessive} vagina and anus were visible, while {PAWN_possessive} breasts, unconstrained by garments, were left to the mercy of the elements.</li>
+			<li>I unwillingly witnessed {PAWN_nameShort} in {PAWN_possessive} sleep, {PAWN_possessive} body naked for all to see. {PAWN_possessive} feminine parts, including {PAWN_possessive} vagina and anus, were visible, while {PAWN_possessive} breasts, unrestricted by clothing, were left in their natural state.</li>
+			<li>I came across {PAWN_nameShort} in {PAWN_possessive} most intimate moment, completely exposed. {PAWN_possessive} vagina and anus were uncovered, while {PAWN_possessive} breasts, unbound by fabric, were left to hang freely.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+
+
+
+	
+</Defs>

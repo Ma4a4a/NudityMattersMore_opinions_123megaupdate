@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_Male_PositiveDef">
+		<defName>iSaw_sleeping_naked_Male_Positive</defName>
+        <label>iSaw_sleeping_naked_Male_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I stole a glance at {PAWN_nameShort}, sleeping unclothed, {PAWN_possessive} manhood and anus exposed in the dim light, leaving me with a mix of shock and intrigue.</li>
+			<li>As I entered the room, my eyes fell upon {PAWN_nameShort}, sprawled naked on the bed, {PAWN_possessive} private parts in full view, stirring a forbidden desire within me.</li>
+			<li>In the midst of the night, I caught sight of {PAWN_nameShort}, slumbering naked, {PAWN_possessive} penis and anus evident, and I couldn't look away, consumed by a lewd curiosity.</li>
+			<li>I found {PAWN_nameShort} asleep, {PAWN_possessive} nudity on display, {PAWN_possessive} manhood and anus unhidden, and I felt a strange allure, a lewd fascination.</li>
+			<li>In the quiet of the room, I saw {PAWN_nameShort}, naked and vulnerable, {PAWN_possessive} private parts exposed, and I was hit with a wave of lewd thoughts, a tantalizing image.</li>
+			<li>I chanced upon {PAWN_nameShort}, in the throes of sleep, {PAWN_possessive} body bare, {PAWN_possessive} manhood and anus visible, and I was filled with a lewd longing, a lustful attraction.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_Male_NeutralDef">
+		<defName>iSaw_sleeping_naked_Male_Neutral</defName>
+        <label>iSaw_sleeping_naked_Male_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>As I walked in, my gaze fell upon {PAWN_nameShortPossessive} sleeping form, {PAWN_possessive} naked body splayed out on the bed, {PAWN_possessive} penis and anus visible in the dim light, and I felt a fleeting sense of indifference, my mind barely registering the sight.</li>
+			<li>I noticed {PAWN_nameShort} was sleeping naked, {PAWN_possessive} body exposed to the cooling air, {PAWN_possessive} penis flaccid and {PAWN_possessive} anus relaxed, and I shrugged it off, my attention already wandering to other matters.</li>
+			<li>My eyes drifted over {PAWN_nameShortPossessive} sleeping form, taking in the contours of {PAWN_possessive} naked body, the curve of {PAWN_possessive} penis and the shape of {PAWN_possessive} anus, and I felt nothing but a mild curiosity, not enough to stir any real interest.</li>
+			<li>As I stood there, I caught a glimpse of {PAWN_possessive} naked body, {PAWN_possessive} penis and anus visible in the shadows, and I thought to myself, 'Oh, {PAWN_subjective} is sleeping naked again,' with all the emotional resonance of a passing thought.</li>
+			<li>I saw {PAWN_nameShort} sleeping naked, {PAWN_possessive} body exposed and vulnerable, and yet I felt no spark of arousal or embarrassment, just a dull awareness of the fact, like noting the time on a clock.</li>
+			<li>My gaze grazed over {PAWN_nameShortPossessive} naked form, taking in the sight of {PAWN_possessive} penis and anus with the same level of interest I'd accord a familiar landscape, and I moved on, my mind already engaged with other thoughts.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_Male_NegativeDef">
+		<defName>iSaw_sleeping_naked_Male_Negative</defName>
+        <label>iSaw_sleeping_naked_Male_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>As I entered the room, I was confronted with the unsettling sight of {PAWN_nameShort}, sprawled out naked on the bed, {PAWN_possessive} penis and anus blatantly exposed, a wave of annoyance washing over me.</li>
+			<li>I couldn't help but notice with irritation as I walked in, finding {PAWN_nameShort} fast asleep in the nude, {PAWN_possessive} genitals and anus carelessly on display.</li>
+			<li>The annoyance simmered within me as I stumbled upon {PAWN_nameShort}, lying bare-skinned, {PAWN_possessive} private parts brazenly visible, a disturbing sight that I could not unsee.</li>
+			<li>I was met with a sight that stirred up a storm of annoyance within me - {PAWN_nameShort}, exposed and vulnerable in {PAWN_possessive} sleep, {PAWN_possessive} intimate areas in plain view.</li>
+			<li>As I cautiously approached, I was taken aback by the sight of {PAWN_possessive} naked form, {PAWN_possessive} genitalia and anus glaringly obvious, fueling my irritation.</li>
+			<li>A surge of annoyance flooded through me as I witnessed {PAWN_nameShort}, completely stripped, {PAWN_possessive} privates openly visible, a most unwelcome sight.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+
+
+
+	
+</Defs>

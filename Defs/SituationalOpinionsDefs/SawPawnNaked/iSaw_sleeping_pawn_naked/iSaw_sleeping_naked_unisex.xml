@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_Unisex_PositiveDef">
+		<defName>iSaw_sleeping_naked_Unisex_Positive</defName>
+        <label>iSaw_sleeping_naked_Unisex_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>Caught {OBSERVED_nameShort} sleeping naked, all private parts was exposed for me.</li>
+			<li>{OBSERVED_nameShort} was exposed during asleep, and I felt a thrill at the sight.</li>
+			<li>I saw {PAWN_nameShortPossessive} sleeping bare body, such a moment to enjoy every curve.</li>
+			<li>Sleeping {OBSERVED_nameShort} was completly naked, helpless beauty that i'm enjoying.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_Unisex_NeutralDef">
+		<defName>iSaw_sleeping_naked_Unisex_Neutral</defName>
+        <label>iSaw_sleeping_naked_Unisex_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I saw {OBSERVED_nameShort} was uncovered during asleep, nothing to say.</li>
+			<li>{OBSERVED_nameShort} is sleeping naked, is it comfortable?</li>
+			<li>{OBSERVED_nameShort} was sleeping without clothes, but i didn't pay any mind.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_sleeping_naked_Unisex_NegativeDef">
+		<defName>iSaw_sleeping_naked_Unisex_Negative</defName>
+        <label>iSaw_sleeping_naked_Unisex_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				 
+				<requiredPawnState>Asleep</requiredPawnState>
+				<requiredObservedAware>false</requiredObservedAware>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I have spotted naked {OBSERVED_nameShort} asleep, felt uncomfortable.</li>
+			<li>Saw sleeping {OBSERVED_nameShort} nudity, I was disgusted by all the holes and hanging things.</li>
+			<li>Glimpsed on sleeping {OBSERVED_nameShort} bareness, it was unpleasant.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+
+
+
+	
+</Defs>
