@@ -160,11 +160,26 @@ namespace NudityMattersMore_opinions
             var pair = Tuple.Create(initiator, recipient);
             if (specificCooldownDict.TryGetValue(pair, out int lastTick) && currentTick - lastTick < InteractionCooldownTicks) return;
 
+            if (initiator == null || recipient == null)
+            {
+                Log.Warning($"[NMM Opinions] Skipping commentary for null pawn. Initiator: {initiator?.LabelCap ?? "null"}, Recipient: {recipient?.LabelCap ?? "null"}");
+                return;
+            }
+
             commentaryQueue.Enqueue(() => FireSingleCommentary(initiator, recipient, interactionDef, rawOpinionText, pair, specificCooldownDict, originalObserver, originalObserved));
         }
 
         private static void FireSingleCommentary(Pawn initiator, Pawn recipient, InteractionDef interactionDef, string rawOpinionText, Tuple<Pawn, Pawn> pair, Dictionary<Tuple<Pawn, Pawn>, int> cooldownDict, Pawn originalObserver, Pawn originalObserved)
         {
+
+            // Добавляем проверку на null для initiator и recipient в самом начале метода
+            if (initiator == null || recipient == null)
+            {
+                Log.Warning($"[NMM Opinions] FireSingleCommentary skipped due to null pawn. Initiator: {initiator?.LabelCap ?? "null"}, Recipient: {recipient?.LabelCap ?? "null"}");
+                return;
+            }
+
+
             int currentTick = Find.TickManager.TicksGame;
             if (pawnGlobalCooldownExpiry.TryGetValue(initiator, out int expiryTick) && currentTick < expiryTick)
             {
