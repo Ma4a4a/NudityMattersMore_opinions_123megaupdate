@@ -4,7 +4,7 @@ using rjw; // Quirk, Genital_Helper, ISexPartHediff, HediffComp_SexPart
 using System; // Exception
 using System.Collections.Generic; //  List, Dictionary
 using System.Linq; //  LINQ
-using Verse; 
+using Verse;
 
 namespace NudityMattersMore_opinions
 {
@@ -20,11 +20,35 @@ namespace NudityMattersMore_opinions
         // new entry for dynamic interaction bubbles
         public static BodyPartDef LastObservedBodyPartDef = null;
 
+
         // Dictionary for storing memory of situational opinions for each pawn.
         // Removed persistence of this dictionary so that the log is not saved.
         private static Dictionary<Pawn, PawnSituationalOpinionMemory> pawnSituationalOpinionMemories = new Dictionary<Pawn, PawnSituationalOpinionMemory>();
         private static System.Random random = new System.Random();
 
+        // --- КЭШИРОВАНИЕ КВИРКОВ ДЛЯ БЫСТРОГО ПОИСКА ---
+        private static readonly Dictionary<string, Quirk> _cachedQuirks = new Dictionary<string, Quirk>();
+
+        // Переменная для кеширования статуса RJW
+        private static readonly bool IsRjwActive;
+
+        static SituationalOpinionHelper()
+        {
+            // Заполняем кэш квирков при старте мода
+            foreach (var quirk in rjw.Quirk.All)
+            {
+                if (!_cachedQuirks.ContainsKey(quirk.Key))
+                {
+                    _cachedQuirks.Add(quirk.Key, quirk);
+                }
+                if (!string.IsNullOrEmpty(quirk.LocaliztionKey) && !_cachedQuirks.ContainsKey(quirk.LocaliztionKey))
+                {
+                    _cachedQuirks.Add(quirk.LocaliztionKey, quirk);
+                }
+            }
+            // Проверяем активность RJW один раз и сохраняем результат
+            IsRjwActive = ModLister.HasActiveModWithName("RimJobWorld");
+        }
 
 
         // +++  COOLDOWN TO PREVENT DUPLICATION +++
@@ -91,7 +115,7 @@ namespace NudityMattersMore_opinions
             {
                 return; // Exit if this logOwner has already recently formed an opinion about this target.
             }
-            
+
             PawnSituationalOpinionMemory logOwnerMemory = GetOrCreatePawnSituationalOpinionMemory(logOwner);
 
             Pawn opinionSubjectPawn; // A pawn whose "thought" or "feeling" is expressed
@@ -208,182 +232,189 @@ namespace NudityMattersMore_opinions
             }
 
 
+            // --- ПРЕДВАРИТЕЛЬНЫЕ ПРОВЕРКИ И ВЫЧИСЛЕНИЯ ДЛЯ ОПТИМИЗАЦИИ ---
+            // Если одна из пешек null, мы не можем продолжить.
+            if (actualObserver == null || actualObserved == null)
+            {
+                Log.Warning($"[NMM Opinions] SelectOpinionText: actualObserver or actualObserved is null. Observer: {actualObserver?.LabelShort ?? "null"}, Observed: {actualObserved?.LabelShort ?? "null"}. Returning empty string.");
+                return "";
+            }
 
-            // Pre-calculate the observed pawn's clothing state
-            // Use actualObserved to get the clothing state
+            // Предварительно вычисляем состояние одежды наблюдаемой пешки
             DressState currentObservedDressState = GetPawnDressState(actualObserved);
+            // Предварительно вычисляем состояние одежды наблюдателя (если нужно)
+            DressState currentObserverDressState = GetPawnDressState(actualObserver);
 
-            // 1. First, filter out specific opinions
-            List<OpinionDef_Situational> candidateOpinions = SituationalOpinionDefCache.SpecificOpinions
-            .Where(def => {
-                    bool passesAllConditions = true; // Flag to track all conditions
+            // Предварительно вычисляем, есть ли у наблюдаемой пешки грудь
+            bool observedHasBreasts = NudityMattersMore.InfoHelper.HasBreasts(actualObserved);
 
-
-
-                    // We also filter those that don't have any modExtensions at all (since they are non-specific).
-                    if (def.GetModExtension<OpinionConditionExtension_Situational>() == null) passesAllConditions = false;
-
-                    OpinionConditionExtension_Situational ext = def.GetModExtension<OpinionConditionExtension_Situational>();
-
-                    // Filter by the required perspective.
-                    if (ext.perspective != OpinionPerspective.Any && ext.perspective != requiredPerspective)
-                    {
-                        passesAllConditions = false;
-                    }
-
-                    // --- LOGIC: Exclude breast/topless opinions for regular male pawns ---
-                    // If the observed pawn is male and does not have breasts (e.g. not futa),
-                    // and the opinion requires the "topless" state or is about the "breasts"/"chest" body parts,
-                    // then exclude that opinion.
-                    // Use actualObserved for this check
-                    if (actualObserved.gender == Gender.Male && !NudityMattersMore.InfoHelper.HasBreasts(actualObserved))
-                    {
-                        if (ext.requiredObservedDressState == DressState.Topless ||
-                            (ext.requiredBodyPartSeen != null && (ext.requiredBodyPartSeen.defName == "Breasts" || ext.requiredBodyPartSeen.defName == "Chest")))
-                        {
-                            passesAllConditions = false; // Eliminating opinions about breasts/topless for men without breasts
-                        }
-                    }
-
-
-                    // Basic filtering by DressState: if a specific state is specified in the XML (not the default Clothed),
-                    // it must match. If Clothed, the pawn must be Clothed.
-                    if (ext.requiredObservedDressState != DressState.Clothed)
-                    {
-                        if (ext.requiredObservedDressState != currentObservedDressState)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-                    else // ext.requiredObservedDressState == DressState.Clothed (default statement)
-                    {
-                        // If the default opinion is for a "dressed" pawn, it should only be triggered if the pawn is actually dressed.
-                        // If the pawn is in any other state (Naked, Topless, Bottomless, Covering), this opinion is not applicable.
-                        if (currentObservedDressState != DressState.Clothed)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-
-                    // Check InteractionType and PawnState conditions (strict filters)
-                    if (ext.requiredInteractionType != InteractionType.None && ext.requiredInteractionType != interactionType)
-                    { passesAllConditions = false; }
-                    if (ext.requiredPawnState != PawnState.None && ext.requiredPawnState != pawnState)
-                    { passesAllConditions = false; }
-
-                    // Conditions associated with awareness
-                    if (ext.requiredObservedAware.HasValue && ext.requiredObservedAware.Value != aware) { passesAllConditions = false; }
-
-                    // Body Part Related Conditions (for situational opinions)
-                    if (ext.requiredBodyPartSeen != null) // If a specific body part is required
-                    {
-                        bool partActuallySeen = isSelfObservation || IsPartSeen(actualObserver, actualObserved, ext.requiredBodyPartSeen);
-                        if (!partActuallySeen) { passesAllConditions = false; }
-                    }
-
-                    if (ext.requiredPartSizeRange.HasValue)
-                    {
-                        float currentSeverity = GetPartSeverity(actualObserved, ext.requiredBodyPartSeen);
-                        if (!(currentSeverity >= ext.requiredPartSizeRange.Value.min && currentSeverity <= ext.requiredPartSizeRange.Value.max)) { passesAllConditions = false; }
-                    }
-
-                    if (ext.requiredGenitalFamily != GenitalFamily.Undefined)
-                    {
-                        GenitalFamily detectedFamily = GetGenitalFamily(actualObserved, ext.requiredBodyPartSeen);
-                        if (ext.requiredGenitalFamily != detectedFamily) { passesAllConditions = false; }
-                    }
-
-
-                    // Check conditions for observer
-                    if (ext.requiredObserverTrait != null && (actualObserver == null || !actualObserver.story.traits.HasTrait(ext.requiredObserverTrait))) passesAllConditions = false;
-                    if (ext.requiredObserverHediffDef != null && (actualObserver == null || !actualObserver.health.hediffSet.HasHediff(ext.requiredObserverHediffDef))) passesAllConditions = false;
-                    if (ext.requiredObserverGeneDef != null && (actualObserver == null || actualObserver.genes == null || !actualObserver.genes.HasActiveGene(ext.requiredObserverGeneDef))) passesAllConditions = false;
-                    if (ext.requiredObserverGender.HasValue && (actualObserver == null || actualObserver.gender != ext.requiredObserverGender.Value)) passesAllConditions = false;
-                    if (ext.requiredObserverLifeStage != null && (actualObserver == null || actualObserver.ageTracker.CurLifeStage != ext.requiredObserverLifeStage)) passesAllConditions = false;
-                    if (ext.requiredObserverPawnKind != null && (actualObserver == null || actualObserver.kindDef != ext.requiredObserverPawnKind)) passesAllConditions = false;
-                    if (!string.IsNullOrEmpty(ext.requiredObserverQuirk))
-                    {
-                        Quirk targetQuirk = rjw.Quirk.All.FirstOrDefault(q => q.Key == ext.requiredObserverQuirk || q.LocaliztionKey == ext.requiredObserverQuirk);
-                        if (targetQuirk == null || actualObserver == null || !rjw.PawnExtensions.Has(actualObserver, targetQuirk)) passesAllConditions = false;
-                    }
-                    if (ext.requiredObserverMinBiologicalAge > 0 && (actualObserver == null || actualObserver.ageTracker.AgeBiologicalYears < ext.requiredObserverMinBiologicalAge)) passesAllConditions = false;
-                    if (ext.requiredObserverMaxBiologicalAge > 0 && (actualObserver == null || actualObserver.ageTracker.AgeBiologicalYears > ext.requiredObserverMaxBiologicalAge)) passesAllConditions = false;
-                    if (ext.requiredObserverNeedSexState != NeedSexState.Any && (actualObserver == null || GetNeedSexState(actualObserver) != ext.requiredObserverNeedSexState)) passesAllConditions = false;
-
-                    // More explicit check for requiredObserverDressState
-                    if (ext.requiredObserverDressState != DressState.Clothed)
-                    {
-                        if (actualObserver == null || GetPawnDressState(actualObserver) != ext.requiredObserverDressState)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-
-                    // More explicit requiredObserverIsCovering check
-                    if (ext.requiredObserverIsCovering.HasValue)
-                    {
-                        bool observerIsCovering = (actualObserver != null && NudityMattersMore.InfoHelper.IsCovering(actualObserver, out _));
-                        if (actualObserver == null || observerIsCovering != ext.requiredObserverIsCovering.Value)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-
-                    if (ext.requiredObserverPregnancyTrimester != PregnancyTrimester.Any)
-                    {
-                        Hediff_Pregnant observerPregnancyHediff = actualObserver?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
-                        if (observerPregnancyHediff == null || GetPregnancyTrimester(observerPregnancyHediff) != ext.requiredObserverPregnancyTrimester) passesAllConditions = false;
-                    }
-                    if (ext.requiredObserverRelation != null && (actualObserver == null || actualObserved == null || !actualObserver.relations.DirectRelationExists(ext.requiredObserverRelation, actualObserved))) passesAllConditions = false;
-
-
-
-                    // Check conditions for observable
-                    if (ext.requiredObservedTrait != null && (actualObserved == null || !actualObserved.story.traits.HasTrait(ext.requiredObservedTrait))) passesAllConditions = false;
-                    if (ext.requiredObservedHediffDef != null && (actualObserved == null || !actualObserved.health.hediffSet.HasHediff(ext.requiredObservedHediffDef))) passesAllConditions = false;
-                    if (ext.requiredObservedGeneDef != null && (actualObserved == null || actualObserved.genes == null || !actualObserved.genes.HasActiveGene(ext.requiredObservedGeneDef))) passesAllConditions = false;
-                    if (ext.requiredObservedGender.HasValue && (actualObserved == null || actualObserved.gender != ext.requiredObservedGender.Value)) passesAllConditions = false;
-                    if (ext.requiredObservedLifeStage != null && (actualObserved == null || actualObserved.ageTracker.CurLifeStage != ext.requiredObservedLifeStage)) passesAllConditions = false;
-                    if (ext.requiredObservedPawnKind != null && (actualObserved == null || actualObserved.kindDef != ext.requiredObservedPawnKind)) passesAllConditions = false;
-                    if (ext.requiredObservedMinBiologicalAge > 0 && (actualObserved == null || actualObserved.ageTracker.AgeBiologicalYears < ext.requiredObservedMinBiologicalAge)) passesAllConditions = false;
-                    if (ext.requiredObservedMaxBiologicalAge > 0 && (actualObserved == null || actualObserved.ageTracker.AgeBiologicalYears <= ext.requiredObservedMaxBiologicalAge)) passesAllConditions = false;
-                    if (ext.requiredObservedNeedSexState != NeedSexState.Any && (actualObserved == null || GetNeedSexState(actualObserved) != ext.requiredObservedNeedSexState)) passesAllConditions = false;
-
-
-                    // More explicit check for requiredObservedIsCovering
-                    if (ext.requiredObservedIsCovering.HasValue)
-                    {
-                        bool observedIsCovering = (actualObserved != null && NudityMattersMore.InfoHelper.IsCovering(actualObserved, out _));
-                        if (actualObserved == null || observedIsCovering != ext.requiredObservedIsCovering.Value)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-
-                    if (ext.requiredObservedPregnancyTrimester != PregnancyTrimester.Any)
-                    {
-                        Hediff_Pregnant observedPregnancyHediff = actualObserved?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
-                        if (observedPregnancyHediff == null || GetPregnancyTrimester(observedPregnancyHediff) != ext.requiredObservedPregnancyTrimester) passesAllConditions = false;
-                    }
-                    if (ext.requiredObservedRelation != null && (actualObserver == null || actualObserved == null || !actualObserved.relations.DirectRelationExists(ext.requiredObservedRelation, actualObserver))) passesAllConditions = false;
-
-
-
-                    // If all the basic conditions are met, the opinion is a candidate
-                    return passesAllConditions;
-                })
-                .ToList();
 
             List<(OpinionDef_Situational def, int weight)> weighedCandidateOpinions = new List<(OpinionDef_Situational def, int weight)>();
 
-            foreach (var opinionDef in candidateOpinions)
+            // 1. First, filter out specific opinions
+            // ИСПРАВЛЕНО: Заменен LINQ .Where().ToList() на foreach с ранними выходами для производительности.
+            foreach (var def in SituationalOpinionDefCache.SpecificOpinions)
             {
+                OpinionConditionExtension_Situational ext = def.GetModExtension<OpinionConditionExtension_Situational>();
+
+                // Мы также отфильтровываем те, у которых вообще нет расширений мода (поскольку они неспецифичны).
+                if (ext == null) continue;
+
+                // Filter by the required perspective.
+                if (ext.perspective != OpinionPerspective.Any && ext.perspective != requiredPerspective)
+                {
+                    continue;
+                }
+
+                // --- LOGIC: Exclude breast/topless opinions for regular male pawns ---
+                // Если наблюдаемая пешка мужского пола и не имеет груди (например, не фута),
+                // и мнение требует состояния "топлесс" или относится к частям тела "грудь"/"грудная клетка",
+                // тогда исключаем это мнение.
+                if (actualObserved.gender == Gender.Male && !observedHasBreasts)
+                {
+                    if (ext.requiredObservedDressState == DressState.Topless ||
+                        (ext.requiredBodyPartSeen != null && (ext.requiredBodyPartSeen.defName == "Breasts" || ext.requiredBodyPartSeen.defName == "Chest")))
+                    {
+                        continue; // Исключаем мнения о груди/топлесс для мужчин без груди
+                    }
+                }
+
+                // Basic filtering by DressState: if a specific state is specified in the XML (not the default Clothed),
+                // it must match. If Clothed, the pawn must be Clothed.
+                if (ext.requiredObservedDressState != DressState.Clothed)
+                {
+                    if (ext.requiredObservedDressState != currentObservedDressState)
+                    {
+                        continue;
+                    }
+                }
+                else // ext.requiredObservedDressState == DressState.Clothed (default statement)
+                {
+                    // Если мнение по умолчанию предназначено для "одетой" пешки, оно должно срабатывать только если пешка действительно одета.
+                    // Если пешка находится в любом другом состоянии (Naked, Topless, Bottomless, Covering), это мнение неприменимо.
+                    if (currentObservedDressState != DressState.Clothed)
+                    {
+                        continue;
+                    }
+                }
+
+                // Check InteractionType and PawnState conditions (strict filters)
+                if (ext.requiredInteractionType != InteractionType.None && ext.requiredInteractionType != interactionType)
+                { continue; }
+                if (ext.requiredPawnState != PawnState.None && ext.requiredPawnState != pawnState)
+                { continue; }
+
+                // Conditions associated with awareness
+                if (ext.requiredObservedAware.HasValue && ext.requiredObservedAware.Value != aware) { continue; }
+
+                // Body Part Related Conditions (for situational opinions)
+                if (ext.requiredBodyPartSeen != null) // If a specific body part is required
+                {
+                    bool partActuallySeen = isSelfObservation || IsPartSeen(actualObserver, actualObserved, ext.requiredBodyPartSeen);
+                    if (!partActuallySeen) { continue; }
+                }
+
+                if (ext.requiredPartSizeRange.HasValue)
+                {
+                    float currentSeverity = GetPartSeverity(actualObserved, ext.requiredBodyPartSeen);
+                    if (!(currentSeverity >= ext.requiredPartSizeRange.Value.min && currentSeverity <= ext.requiredPartSizeRange.Value.max)) { continue; }
+                }
+
+                if (ext.requiredGenitalFamily != GenitalFamily.Undefined)
+                {
+                    GenitalFamily detectedFamily = GetGenitalFamily(actualObserved, ext.requiredBodyPartSeen);
+                    if (ext.requiredGenitalFamily != detectedFamily) { continue; }
+                }
+
+
+                // Check conditions for observer
+                if (ext.requiredObserverTrait != null && (actualObserver.story == null || !actualObserver.story.traits.HasTrait(ext.requiredObserverTrait))) continue;
+                if (ext.requiredObserverHediffDef != null && (actualObserver.health == null || !actualObserver.health.hediffSet.HasHediff(ext.requiredObserverHediffDef))) continue;
+                if (ext.requiredObserverGeneDef != null && (actualObserver.genes == null || !actualObserver.genes.HasActiveGene(ext.requiredObserverGeneDef))) continue;
+                if (ext.requiredObserverGender.HasValue && actualObserver.gender != ext.requiredObserverGender.Value) continue;
+                if (ext.requiredObserverLifeStage != null && (actualObserver.ageTracker == null || actualObserver.ageTracker.CurLifeStage != ext.requiredObserverLifeStage)) continue;
+                if (ext.requiredObserverPawnKind != null && actualObserver.kindDef != ext.requiredObserverPawnKind) continue;
+                if (!string.IsNullOrEmpty(ext.requiredObserverQuirk))
+                {
+                    // ИСПРАВЛЕНО: Использование кэшированного словаря для быстрого поиска квирков
+                    if (!_cachedQuirks.TryGetValue(ext.requiredObserverQuirk, out Quirk targetQuirk) || !rjw.PawnExtensions.Has(actualObserver, targetQuirk)) continue;
+                }
+                if (ext.requiredObserverMinBiologicalAge > 0 && (actualObserver.ageTracker == null || actualObserver.ageTracker.AgeBiologicalYears < ext.requiredObserverMinBiologicalAge)) continue;
+                if (ext.requiredObserverMaxBiologicalAge > 0 && (actualObserver.ageTracker == null || actualObserver.ageTracker.AgeBiologicalYears > ext.requiredObserverMaxBiologicalAge)) continue;
+                if (ext.requiredObserverNeedSexState != NeedSexState.Any && GetNeedSexState(actualObserver) != ext.requiredObserverNeedSexState) continue;
+
+                // More explicit check for requiredObserverDressState
+                if (ext.requiredObserverDressState != DressState.Clothed)
+                {
+                    if (currentObserverDressState != ext.requiredObserverDressState)
+                    {
+                        continue;
+                    }
+                }
+
+                // More explicit requiredObserverIsCovering check
+                if (ext.requiredObserverIsCovering.HasValue)
+                {
+                    bool observerIsCovering = NudityMattersMore.InfoHelper.IsCovering(actualObserver, out _);
+                    if (observerIsCovering != ext.requiredObserverIsCovering.Value)
+                    {
+                        continue;
+                    }
+                }
+
+                if (ext.requiredObserverPregnancyTrimester != PregnancyTrimester.Any)
+                {
+                    Hediff_Pregnant observerPregnancyHediff = actualObserver?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
+                    if (observerPregnancyHediff == null || GetPregnancyTrimester(observerPregnancyHediff) != ext.requiredObserverPregnancyTrimester) continue;
+                }
+                if (ext.requiredObserverRelation != null && !actualObserver.relations.DirectRelationExists(ext.requiredObserverRelation, actualObserved)) continue;
+
+
+
+                // Check conditions for observable
+                if (ext.requiredObservedTrait != null && (actualObserved.story == null || !actualObserved.story.traits.HasTrait(ext.requiredObservedTrait))) continue;
+                if (ext.requiredObservedHediffDef != null && (actualObserved.health == null || !actualObserved.health.hediffSet.HasHediff(ext.requiredObservedHediffDef))) continue;
+                if (ext.requiredObservedGeneDef != null && (actualObserved.genes == null || !actualObserved.genes.HasActiveGene(ext.requiredObservedGeneDef))) continue;
+                if (ext.requiredObservedGender.HasValue && actualObserved.gender != ext.requiredObservedGender.Value) continue;
+                if (ext.requiredObservedLifeStage != null && (actualObserved.ageTracker == null || actualObserved.ageTracker.CurLifeStage != ext.requiredObservedLifeStage)) continue;
+                if (ext.requiredObservedPawnKind != null && actualObserved.kindDef != ext.requiredObservedPawnKind) continue;
+                if (ext.requiredObservedMinBiologicalAge > 0 && (actualObserved.ageTracker == null || actualObserved.ageTracker.AgeBiologicalYears < ext.requiredObservedMinBiologicalAge)) continue;
+                if (ext.requiredObservedMaxBiologicalAge > 0 && (actualObserved.ageTracker == null || actualObserved.ageTracker.AgeBiologicalYears <= ext.requiredObservedMaxBiologicalAge)) continue;
+                if (ext.requiredObservedNeedSexState != NeedSexState.Any && GetNeedSexState(actualObserved) != ext.requiredObservedNeedSexState) continue;
+
+
+                // More explicit check for requiredObservedIsCovering
+                if (ext.requiredObservedIsCovering.HasValue)
+                {
+                    bool observedIsCovering = NudityMattersMore.InfoHelper.IsCovering(actualObserved, out _);
+                    if (observedIsCovering != ext.requiredObservedIsCovering.Value)
+                    {
+                        continue;
+                    }
+                }
+
+                if (ext.requiredObservedPregnancyTrimester != PregnancyTrimester.Any)
+                {
+                    Hediff_Pregnant observedPregnancyHediff = actualObserved?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
+                    if (observedPregnancyHediff == null || GetPregnancyTrimester(observedPregnancyHediff) != ext.requiredObservedPregnancyTrimester) continue;
+                }
+                if (ext.requiredObservedRelation != null && !actualObserved.relations.DirectRelationExists(ext.requiredObservedRelation, actualObserver)) continue;
+
+                // Если все условия пройдены, добавляем мнение в кандидаты
+                weighedCandidateOpinions.Add((def, 0)); // Вес будет рассчитан ниже
+            }
+
+            // --- РАСЧЕТ ВЕСОВ ДЛЯ ОТОБРАННЫХ КАНДИДАТОВ ---
+            // ИСПРАВЛЕНО: Расчет весов теперь происходит после первичной фильтрации,
+            // чтобы избежать лишних вычислений для отброшенных мнений.
+            List<(OpinionDef_Situational def, int weight)> finalWeighedCandidateOpinions = new List<(OpinionDef_Situational def, int weight)>();
+            foreach (var opinionTuple in weighedCandidateOpinions)
+            {
+                var opinionDef = opinionTuple.def;
                 int currentWeight = 0;
                 OpinionConditionExtension_Situational ext = opinionDef.GetModExtension<OpinionConditionExtension_Situational>();
 
-
                 // --- PRIORITY: requiredInteractionType ---
-                // Give very high weight if InteractionType matches
                 if (ext.requiredInteractionType == interactionType && interactionType != InteractionType.None)
                 {
                     currentWeight += 10000; // Very high bonus for exact match of interaction type
@@ -443,8 +474,8 @@ namespace NudityMattersMore_opinions
                 if (ext.requiredObserverLifeStage != null && actualObserver.ageTracker != null && actualObserver.ageTracker.CurLifeStage == ext.requiredObserverLifeStage) { currentWeight += 5; }
                 if (!string.IsNullOrEmpty(ext.requiredObserverQuirk))
                 {
-                    Quirk targetQuirk = rjw.Quirk.All.FirstOrDefault(q => q.Key == ext.requiredObserverQuirk || q.LocaliztionKey == ext.requiredObserverQuirk);
-                    if (targetQuirk != null && rjw.PawnExtensions.Has(actualObserver, targetQuirk)) { currentWeight += 15; }
+                    // ИСПРАВЛЕНО: Использование кэшированного словаря для быстрого поиска квирков
+                    if (_cachedQuirks.TryGetValue(ext.requiredObserverQuirk, out Quirk targetQuirk) && rjw.PawnExtensions.Has(actualObserver, targetQuirk)) { currentWeight += 15; }
                 }
                 if (ext.requiredObserverMinBiologicalAge > 0 && actualObserver.ageTracker != null && actualObserver.ageTracker.AgeBiologicalYears >= ext.requiredObserverMinBiologicalAge) { currentWeight += 5; }
                 if (ext.requiredObserverMaxBiologicalAge > 0 && actualObserver.ageTracker != null && actualObserver.ageTracker.AgeBiologicalYears <= ext.requiredObserverMaxBiologicalAge) { currentWeight += 5; }
@@ -454,7 +485,7 @@ namespace NudityMattersMore_opinions
                 // More explicit check for requiredObserverDressState
                 if (ext.requiredObserverDressState != DressState.Clothed)
                 {
-                    if (actualObserver != null && GetPawnDressState(actualObserver) == ext.requiredObserverDressState)
+                    if (currentObserverDressState == ext.requiredObserverDressState)
                     {
                         currentWeight += 10;  // Add weight if clothes condition matches
                     }
@@ -464,22 +495,26 @@ namespace NudityMattersMore_opinions
                 // More explicit requiredObserverIsCovering check
                 if (ext.requiredObserverIsCovering.HasValue)
                 {
-                    bool observerIsCovering = (actualObserver != null && NudityMattersMore.InfoHelper.IsCovering(actualObserver, out _));
-                    if (actualObserver != null && observerIsCovering == ext.requiredObserverIsCovering.Value)
+                    bool observerIsCovering = NudityMattersMore.InfoHelper.IsCovering(actualObserver, out _);
+                    if (observerIsCovering == ext.requiredObserverIsCovering.Value)
                     {
                         currentWeight += 10; // Add weight if cover state matches
                     }
                 }
 
+
                 if (ext.requiredObserverPregnancyTrimester != PregnancyTrimester.Any)
                 {
+                    // Используем 'actualObserver' и сразу приводим к типу Hediff_Pregnant
                     Hediff_Pregnant observerPregnancyHediff = actualObserver?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
+
+                    // Проверяем, что беременность существует и триместр совпадает
                     if (observerPregnancyHediff != null && GetPregnancyTrimester(observerPregnancyHediff) == ext.requiredObserverPregnancyTrimester)
                     {
                         currentWeight += 20;
                     }
                 }
-                if (ext.requiredObserverRelation != null && (actualObserver == null || actualObserved == null || !actualObserver.relations.DirectRelationExists(ext.requiredObserverRelation, actualObserved))) { /* No weight added if condition not met */ }
+                if (ext.requiredObserverRelation != null && actualObserver.relations.DirectRelationExists(ext.requiredObserverRelation, actualObserved)) { currentWeight += 5; } // Добавлен вес, если условие выполнено
 
 
                 // --- Check and weigh conditions for the Observable (actualObserved in this context) ---
@@ -491,18 +526,14 @@ namespace NudityMattersMore_opinions
                 if (ext.requiredObservedMinBiologicalAge > 0 && actualObserved.ageTracker != null && actualObserved.ageTracker.AgeBiologicalYears >= ext.requiredObservedMinBiologicalAge) { currentWeight += 5; }
                 if (ext.requiredObservedMaxBiologicalAge > 0 && actualObserved.ageTracker != null && actualObserved.ageTracker.AgeBiologicalYears <= ext.requiredObservedMaxBiologicalAge) { currentWeight += 5; }
                 if (ext.requiredObservedNeedSexState != NeedSexState.Any && GetNeedSexState(actualObserved) == ext.requiredObservedNeedSexState) { currentWeight += 10; }
-
-
-                // More explicit check for requiredObservedIsCovering
                 if (ext.requiredObservedIsCovering.HasValue)
                 {
-                    bool observedIsCovering = (actualObserved != null && NudityMattersMore.InfoHelper.IsCovering(actualObserved, out _));
-                    if (actualObserved != null && observedIsCovering == ext.requiredObservedIsCovering.Value)
+                    bool observedIsCovering = NudityMattersMore.InfoHelper.IsCovering(actualObserved, out _);
+                    if (observedIsCovering == ext.requiredObservedIsCovering.Value)
                     {
-                        currentWeight += 10;  // Add weight if cover state matches
+                        currentWeight += 10;
                     }
                 }
-
                 if (ext.requiredObservedPregnancyTrimester != PregnancyTrimester.Any)
                 {
                     Hediff_Pregnant observedPregnancyHediff = actualObserved?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
@@ -511,20 +542,19 @@ namespace NudityMattersMore_opinions
                         currentWeight += 20;
                     }
                 }
-                if (ext.requiredObservedRelation != null && (actualObserver == null || actualObserved == null || !actualObserved.relations.DirectRelationExists(ext.requiredObservedRelation, actualObserver))) { /* No weight added if condition not met */ }
+                if (ext.requiredObservedRelation != null && actualObserved.relations.DirectRelationExists(ext.requiredObservedRelation, actualObserver)) { currentWeight += 5; } // Добавлен вес, если условие выполнено
 
-
-                // If all the basic conditions are met, the opinion is a candidate
-                weighedCandidateOpinions.Add((opinionDef, currentWeight));
+                finalWeighedCandidateOpinions.Add((opinionDef, currentWeight));
             }
+
 
             OpinionDef_Situational selectedOpinionDef = null;
 
             // Select the best specific opinion
-            if (weighedCandidateOpinions.Any())
+            if (finalWeighedCandidateOpinions.Any())
             {
-                int maxWeight = weighedCandidateOpinions.Max(x => x.weight);
-                var bestOpinions = weighedCandidateOpinions.Where(x => x.weight == maxWeight).ToList();
+                int maxWeight = finalWeighedCandidateOpinions.Max(x => x.weight);
+                var bestOpinions = finalWeighedCandidateOpinions.Where(x => x.weight == maxWeight).ToList();
                 selectedOpinionDef = bestOpinions.RandomElement().def;
             }
 
@@ -602,7 +632,7 @@ namespace NudityMattersMore_opinions
             }
 
             return finalOpinionText;
-        
+
         }
         /// <summary>
         /// Determines and returns the text of a situational opinion for the social bubble based on the given conditions.
@@ -643,170 +673,185 @@ namespace NudityMattersMore_opinions
                 actualObserved = targetPawn;
             }
 
-            // Pre-calculate the observed pawn's clothing state
+            // --- ПРЕДВАРИТЕЛЬНЫЕ ПРОВЕРКИ И ВЫЧИСЛЕНИЯ ДЛЯ ОПТИМИЗАЦИИ ---
+            // Если одна из пешек null, мы не можем продолжить.
+            if (actualObserver == null || actualObserved == null)
+            {
+                Log.Warning($"[NMM Opinions] SelectOpinionTextForBubble: actualObserver or actualObserved is null. Observer: {actualObserver?.LabelShort ?? "null"}, Observed: {actualObserved?.LabelShort ?? "null"}. Returning empty string.");
+                return "";
+            }
+
+            // Предварительно вычисляем состояние одежды наблюдаемой пешки
             DressState currentObservedDressState = GetPawnDressState(actualObserved);
+            // Предварительно вычисляем состояние одежды наблюдателя (если нужно)
+            DressState currentObserverDressState = GetPawnDressState(actualObserver);
 
-            // 1. Filter specific opinions
-            List<OpinionDef_Situational> candidateOpinions = SituationalOpinionDefCache.SpecificOpinions
-            .Where(def => {
-                bool passesAllConditions = true;
+            // Предварительно вычисляем, есть ли у наблюдаемой пешки грудь
+            bool observedHasBreasts = NudityMattersMore.InfoHelper.HasBreasts(actualObserved);
 
-                    // Filter Defs that are marked as IsBaseOpinionExtension.
-                    // These will NOT be used for dynamic bubbles, only as a fallback in main log.
-
-                    // We also filter those that don't have any modExtensions at all (since they are non-specific).
-                    if (def.GetModExtension<OpinionConditionExtension_Situational>() == null) passesAllConditions = false;
-
-                    OpinionConditionExtension_Situational ext = def.GetModExtension<OpinionConditionExtension_Situational>();
-
-                    // Filter by the required perspective.
-                    // For bubbles, we only want opinions explicitly defined for the correct perspective.
-                    if (ext.perspective != requiredPerspective)
-                    {
-                        passesAllConditions = false;
-                    }
-
-                    // --- LOGIC: Exclude breast/topless opinions for regular male pawns ---
-                    if (actualObserved.gender == Gender.Male && !NudityMattersMore.InfoHelper.HasBreasts(actualObserved))
-                    {
-                        if (ext.requiredObservedDressState == DressState.Topless ||
-                            (ext.requiredBodyPartSeen != null && (ext.requiredBodyPartSeen.defName == "Breasts" || ext.requiredBodyPartSeen.defName == "Chest")))
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-
-                    // Basic filtering by DressState
-                    if (ext.requiredObservedDressState != DressState.Clothed)
-                    {
-                        if (ext.requiredObservedDressState != currentObservedDressState)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-                    else
-                    {
-                        if (currentObservedDressState != DressState.Clothed)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-
-                    // Check InteractionType and PawnState conditions
-                    if (ext.requiredInteractionType != InteractionType.None && ext.requiredInteractionType != nmmInteractionType)
-                    { passesAllConditions = false; }
-                    if (ext.requiredPawnState != PawnState.None && ext.requiredPawnState != nmmPawnState)
-                    { passesAllConditions = false; }
-
-                    // Conditions associated with awareness
-                    if (ext.requiredObservedAware.HasValue && ext.requiredObservedAware.Value != aware) { passesAllConditions = false; }
-
-                    // Body Part Related Conditions
-                    if (ext.requiredBodyPartSeen != null)
-                    {
-                        bool partActuallySeen = isSelfObservation || IsPartSeen(actualObserver, actualObserved, ext.requiredBodyPartSeen);
-                        if (!partActuallySeen) { passesAllConditions = false; }
-                    }
-
-                    if (ext.requiredPartSizeRange.HasValue)
-                    {
-                        float currentSeverity = GetPartSeverity(actualObserved, ext.requiredBodyPartSeen);
-                        if (!(currentSeverity >= ext.requiredPartSizeRange.Value.min && currentSeverity <= ext.requiredPartSizeRange.Value.max)) { passesAllConditions = false; }
-                    }
-
-                    if (ext.requiredGenitalFamily != GenitalFamily.Undefined)
-                    {
-                        GenitalFamily detectedFamily = GetGenitalFamily(actualObserved, ext.requiredBodyPartSeen);
-                        if (ext.requiredGenitalFamily != detectedFamily) { passesAllConditions = false; }
-                    }
-
-                    // Check conditions for observer
-                    if (ext.requiredObserverTrait != null && (actualObserver == null || !actualObserver.story.traits.HasTrait(ext.requiredObserverTrait))) passesAllConditions = false;
-                    if (ext.requiredObserverHediffDef != null && (actualObserver == null || !actualObserver.health.hediffSet.HasHediff(ext.requiredObserverHediffDef))) passesAllConditions = false;
-                    if (ext.requiredObserverGeneDef != null && (actualObserver == null || actualObserver.genes == null || !actualObserver.genes.HasActiveGene(ext.requiredObserverGeneDef))) passesAllConditions = false;
-                    if (ext.requiredObserverGender.HasValue && (actualObserver == null || actualObserver.gender != ext.requiredObserverGender.Value)) passesAllConditions = false;
-                    if (ext.requiredObserverLifeStage != null && (actualObserver == null || actualObserver.ageTracker.CurLifeStage != ext.requiredObserverLifeStage)) passesAllConditions = false;
-                    if (ext.requiredObserverPawnKind != null && (actualObserver == null || actualObserver.kindDef != ext.requiredObserverPawnKind)) passesAllConditions = false;
-                    if (!string.IsNullOrEmpty(ext.requiredObserverQuirk))
-                    {
-                        Quirk targetQuirk = rjw.Quirk.All.FirstOrDefault(q => q.Key == ext.requiredObserverQuirk || q.LocaliztionKey == ext.requiredObserverQuirk);
-                        if (targetQuirk == null || actualObserver == null || !rjw.PawnExtensions.Has(actualObserver, targetQuirk)) passesAllConditions = false;
-                    }
-                    if (ext.requiredObserverMinBiologicalAge > 0 && (actualObserver == null || actualObserver.ageTracker.AgeBiologicalYears < ext.requiredObserverMinBiologicalAge)) passesAllConditions = false;
-                    if (ext.requiredObserverMaxBiologicalAge > 0 && (actualObserver == null || actualObserver.ageTracker.AgeBiologicalYears > ext.requiredObserverMaxBiologicalAge)) passesAllConditions = false;
-                    if (ext.requiredObserverNeedSexState != NeedSexState.Any && (actualObserver == null || GetNeedSexState(actualObserver) != ext.requiredObserverNeedSexState)) passesAllConditions = false;
-                    if (ext.requiredObserverDressState != DressState.Clothed)
-                    {
-                        if (actualObserver == null || GetPawnDressState(actualObserver) != ext.requiredObserverDressState)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-                    if (ext.requiredObserverIsCovering.HasValue)
-                    {
-                        bool observerIsCovering = (actualObserver != null && NudityMattersMore.InfoHelper.IsCovering(actualObserver, out _));
-                        if (actualObserver == null || observerIsCovering != ext.requiredObserverIsCovering.Value)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-                    if (ext.requiredObserverPregnancyTrimester != PregnancyTrimester.Any)
-                    {
-                        Hediff_Pregnant observerPregnancyHediff = actualObserver?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
-                        if (observerPregnancyHediff == null || GetPregnancyTrimester(observerPregnancyHediff) != ext.requiredObserverPregnancyTrimester) passesAllConditions = false;
-                    }
-                    if (ext.requiredObserverRelation != null && (actualObserver == null || actualObserved == null || !actualObserver.relations.DirectRelationExists(ext.requiredObserverRelation, actualObserved))) passesAllConditions = false;
-
-
-                    // Check conditions for observable
-                    if (ext.requiredObservedTrait != null && (actualObserved == null || !actualObserved.story.traits.HasTrait(ext.requiredObservedTrait))) passesAllConditions = false;
-                    if (ext.requiredObservedHediffDef != null && (actualObserved == null || !actualObserved.health.hediffSet.HasHediff(ext.requiredObservedHediffDef))) passesAllConditions = false;
-                    if (ext.requiredObservedGeneDef != null && (actualObserved == null || actualObserved.genes == null || !actualObserved.genes.HasActiveGene(ext.requiredObservedGeneDef))) passesAllConditions = false;
-                    if (ext.requiredObservedGender.HasValue && (actualObserved == null || actualObserved.gender != ext.requiredObservedGender.Value)) passesAllConditions = false;
-                    if (ext.requiredObservedLifeStage != null && (actualObserved == null || actualObserved.ageTracker.CurLifeStage != ext.requiredObservedLifeStage)) passesAllConditions = false;
-                    if (ext.requiredObservedPawnKind != null && (actualObserved == null || actualObserved.kindDef != ext.requiredObservedPawnKind)) passesAllConditions = false;
-                    if (ext.requiredObservedMinBiologicalAge > 0 && (actualObserved == null || actualObserved.ageTracker.AgeBiologicalYears < ext.requiredObservedMinBiologicalAge)) passesAllConditions = false;
-                    if (ext.requiredObservedMaxBiologicalAge > 0 && (actualObserved == null || actualObserved.ageTracker.AgeBiologicalYears <= ext.requiredObservedMaxBiologicalAge)) passesAllConditions = false;
-                    if (ext.requiredObservedNeedSexState != NeedSexState.Any && (actualObserved == null || GetNeedSexState(actualObserved) != ext.requiredObservedNeedSexState)) passesAllConditions = false;
-                    if (ext.requiredObservedIsCovering.HasValue)
-                    {
-                        bool observedIsCovering = (actualObserved != null && NudityMattersMore.InfoHelper.IsCovering(actualObserved, out _));
-                        if (actualObserved == null || observedIsCovering != ext.requiredObservedIsCovering.Value)
-                        {
-                            passesAllConditions = false;
-                        }
-                    }
-                    if (ext.requiredObservedPregnancyTrimester != PregnancyTrimester.Any)
-                    {
-                        Hediff_Pregnant observedPregnancyHediff = actualObserved?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
-                        if (observedPregnancyHediff == null || GetPregnancyTrimester(observedPregnancyHediff) != ext.requiredObservedPregnancyTrimester) passesAllConditions = false;
-                    }
-                    if (ext.requiredObservedRelation != null && (actualObserver == null || actualObserved == null || !actualObserved.relations.DirectRelationExists(ext.requiredObservedRelation, actualObserver))) passesAllConditions = false;
-
-                    return passesAllConditions;
-                })
-                .ToList();
 
             List<(OpinionDef_Situational def, int weight)> weighedCandidateOpinions = new List<(OpinionDef_Situational def, int weight)>();
 
-            foreach (var opinionDef in candidateOpinions)
+            // 1. Filter specific opinions
+            // ИСПРАВЛЕНО: Заменен LINQ .Where().ToList() на foreach с ранними выходами для производительности.
+            foreach (var def in SituationalOpinionDefCache.SpecificOpinions)
             {
+                OpinionConditionExtension_Situational ext = def.GetModExtension<OpinionConditionExtension_Situational>();
+
+                // Мы также отфильтровываем те, у которых вообще нет расширений мода (поскольку они неспецифичны).
+                if (ext == null) continue;
+
+                // Filter by the required perspective.
+                // For bubbles, we only want opinions explicitly defined for the correct perspective.
+                if (ext.perspective != requiredPerspective)
+                {
+                    continue;
+                }
+
+                // --- LOGIC: Exclude breast/topless opinions for regular male pawns ---
+                if (actualObserved.gender == Gender.Male && !observedHasBreasts)
+                {
+                    if (ext.requiredObservedDressState == DressState.Topless ||
+                        (ext.requiredBodyPartSeen != null && (ext.requiredBodyPartSeen.defName == "Breasts" || ext.requiredBodyPartSeen.defName == "Chest")))
+                    {
+                        continue;
+                    }
+                }
+
+                // Basic filtering by DressState
+                if (ext.requiredObservedDressState != DressState.Clothed)
+                {
+                    if (ext.requiredObservedDressState != currentObservedDressState)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (currentObservedDressState != DressState.Clothed)
+                    {
+                        continue;
+                    }
+                }
+
+                // Check InteractionType and PawnState conditions
+                if (ext.requiredInteractionType != InteractionType.None && ext.requiredInteractionType != nmmInteractionType)
+                { continue; }
+                if (ext.requiredPawnState != PawnState.None && ext.requiredPawnState != nmmPawnState)
+                { continue; }
+
+                // Conditions associated with awareness
+                if (ext.requiredObservedAware.HasValue && ext.requiredObservedAware.Value != aware) { continue; }
+
+                // Body Part Related Conditions
+                if (ext.requiredBodyPartSeen != null)
+                {
+                    bool partActuallySeen = isSelfObservation || IsPartSeen(actualObserver, actualObserved, ext.requiredBodyPartSeen);
+                    if (!partActuallySeen) { continue; }
+                }
+
+                if (ext.requiredPartSizeRange.HasValue)
+                {
+                    float currentSeverity = GetPartSeverity(actualObserved, ext.requiredBodyPartSeen);
+                    if (!(currentSeverity >= ext.requiredPartSizeRange.Value.min && currentSeverity <= ext.requiredPartSizeRange.Value.max)) { continue; }
+                }
+
+                if (ext.requiredGenitalFamily != GenitalFamily.Undefined)
+                {
+                    GenitalFamily detectedFamily = GetGenitalFamily(actualObserved, ext.requiredBodyPartSeen);
+                    if (ext.requiredGenitalFamily != detectedFamily) { continue; }
+                }
+
+                // Check conditions for observer
+                if (ext.requiredObserverTrait != null && (actualObserver.story == null || !actualObserver.story.traits.HasTrait(ext.requiredObserverTrait))) continue;
+                if (ext.requiredObserverHediffDef != null && (actualObserver.health == null || !actualObserver.health.hediffSet.HasHediff(ext.requiredObserverHediffDef))) continue;
+                if (ext.requiredObserverGeneDef != null && (actualObserver.genes == null || !actualObserver.genes.HasActiveGene(ext.requiredObserverGeneDef))) continue;
+                if (ext.requiredObserverGender.HasValue && actualObserver.gender != ext.requiredObserverGender.Value) continue;
+                if (ext.requiredObserverLifeStage != null && (actualObserver.ageTracker == null || actualObserver.ageTracker.CurLifeStage != ext.requiredObserverLifeStage)) continue;
+                if (ext.requiredObserverPawnKind != null && actualObserver.kindDef != ext.requiredObserverPawnKind) continue;
+                if (!string.IsNullOrEmpty(ext.requiredObserverQuirk))
+                {
+                    // ИСПРАВЛЕНО: Использование кэшированного словаря для быстрого поиска квирков
+                    if (!_cachedQuirks.TryGetValue(ext.requiredObserverQuirk, out Quirk targetQuirk) || !rjw.PawnExtensions.Has(actualObserver, targetQuirk)) continue;
+                }
+                if (ext.requiredObserverMinBiologicalAge > 0 && (actualObserver.ageTracker == null || actualObserver.ageTracker.AgeBiologicalYears < ext.requiredObserverMinBiologicalAge)) continue;
+                if (ext.requiredObserverMaxBiologicalAge > 0 && (actualObserver.ageTracker == null || actualObserver.ageTracker.AgeBiologicalYears > ext.requiredObserverMaxBiologicalAge)) continue;
+                if (ext.requiredObserverNeedSexState != NeedSexState.Any && GetNeedSexState(actualObserver) != ext.requiredObserverNeedSexState) continue;
+                if (ext.requiredObserverDressState != DressState.Clothed)
+                {
+                    if (currentObserverDressState != ext.requiredObserverDressState)
+                    {
+                        continue;
+                    }
+                }
+                if (ext.requiredObserverIsCovering.HasValue)
+                {
+                    bool observerIsCovering = NudityMattersMore.InfoHelper.IsCovering(actualObserver, out _);
+                    if (observerIsCovering != ext.requiredObserverIsCovering.Value)
+                    {
+                        continue;
+                    }
+                }
+                if (ext.requiredObserverPregnancyTrimester != PregnancyTrimester.Any)
+                {
+                    Hediff_Pregnant observerPregnancyHediff = actualObserver?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
+                    if (observerPregnancyHediff == null || GetPregnancyTrimester(observerPregnancyHediff) != ext.requiredObserverPregnancyTrimester) continue;
+                }
+                if (ext.requiredObserverRelation != null && !actualObserver.relations.DirectRelationExists(ext.requiredObserverRelation, actualObserved)) continue;
+
+
+                // Check conditions for observable
+                if (ext.requiredObservedTrait != null && (actualObserved.story == null || !actualObserved.story.traits.HasTrait(ext.requiredObservedTrait))) continue;
+                if (ext.requiredObservedHediffDef != null && (actualObserved.health == null || !actualObserved.health.hediffSet.HasHediff(ext.requiredObservedHediffDef))) continue;
+                if (ext.requiredObservedGeneDef != null && (actualObserved.genes == null || !actualObserved.genes.HasActiveGene(ext.requiredObservedGeneDef))) continue;
+                if (ext.requiredObservedGender.HasValue && actualObserved.gender != ext.requiredObservedGender.Value) continue;
+                if (ext.requiredObservedLifeStage != null && (actualObserved.ageTracker == null || actualObserved.ageTracker.CurLifeStage != ext.requiredObservedLifeStage)) continue;
+                if (ext.requiredObservedPawnKind != null && actualObserved.kindDef != ext.requiredObservedPawnKind) continue;
+                if (ext.requiredObservedMinBiologicalAge > 0 && (actualObserved.ageTracker == null || actualObserved.ageTracker.AgeBiologicalYears < ext.requiredObservedMinBiologicalAge)) continue;
+                if (ext.requiredObservedMaxBiologicalAge > 0 && (actualObserved.ageTracker == null || actualObserved.ageTracker.AgeBiologicalYears <= ext.requiredObservedMaxBiologicalAge)) continue;
+                if (ext.requiredObservedNeedSexState != NeedSexState.Any && GetNeedSexState(actualObserved) != ext.requiredObservedNeedSexState) continue;
+                if (ext.requiredObservedIsCovering.HasValue)
+                {
+                    bool observedIsCovering = NudityMattersMore.InfoHelper.IsCovering(actualObserved, out _);
+                    if (observedIsCovering != ext.requiredObservedIsCovering.Value)
+                    {
+                        continue;
+                    }
+                }
+                if (ext.requiredObservedPregnancyTrimester != PregnancyTrimester.Any)
+                {
+                    Hediff_Pregnant observedPregnancyHediff = actualObserved?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.Pregnant) as Hediff_Pregnant;
+                    if (observedPregnancyHediff == null || GetPregnancyTrimester(observedPregnancyHediff) != ext.requiredObservedPregnancyTrimester) continue;
+                }
+                if (ext.requiredObservedRelation != null && !actualObserved.relations.DirectRelationExists(ext.requiredObservedRelation, actualObserver)) continue;
+
+                // Если все условия пройдены, добавляем мнение в кандидаты
+                weighedCandidateOpinions.Add((def, 0)); // Вес будет рассчитан ниже
+            }
+
+            // --- РАСЧЕТ ВЕСОВ ДЛЯ ОТОБРАННЫХ КАНДИДАТОВ ---
+            // ИСПРАВЛЕНО: Расчет весов теперь происходит после первичной фильтрации,
+            // чтобы избежать лишних вычислений для отброшенных мнений.
+            List<(OpinionDef_Situational def, int weight)> finalWeighedCandidateOpinions = new List<(OpinionDef_Situational def, int weight)>();
+            foreach (var opinionTuple in weighedCandidateOpinions)
+            {
+                var opinionDef = opinionTuple.def;
                 int currentWeight = 0;
                 OpinionConditionExtension_Situational ext = opinionDef.GetModExtension<OpinionConditionExtension_Situational>();
 
                 // --- PRIORITY: requiredInteractionType ---
                 if (ext.requiredInteractionType == nmmInteractionType && nmmInteractionType != InteractionType.None)
                 {
-                    currentWeight += 10000;
+                    currentWeight += 10000; // Very high bonus for exact match of interaction type
                 }
 
                 if (ext.perspective == requiredPerspective)
                 {
-                    currentWeight += 1000;
+                    currentWeight += 1000; // High bonus for exact match to perspective
                 }
                 else if (ext.perspective == OpinionPerspective.Any)
                 {
-                    currentWeight += 10;
+                    currentWeight += 10; // Smaller bonus for "Any" perspective (will work if there is no exact match)
                 }
 
                 // Add weight based on the state of the garment
@@ -814,8 +859,8 @@ namespace NudityMattersMore_opinions
                 {
                     if (ext.requiredObservedDressState == DressState.Naked) currentWeight += 500;
                     else if (ext.requiredObservedDressState == DressState.Topless || ext.requiredObservedDressState == DressState.Bottomless) currentWeight += 100;
-                    else if (ext.requiredObservedDressState == DressState.Covering) currentWeight += 200;
-                    else if (ext.requiredObservedDressState == DressState.Clothed) currentWeight += 10;
+                    else if (ext.requiredObservedDressState == DressState.Covering) currentWeight += 200; // Adding weight for Covering
+                    else if (ext.requiredObservedDressState == DressState.Clothed) currentWeight += 10; // Smaller weight for clothed
                 }
 
                 // Add weight for matching PawnState
@@ -844,23 +889,23 @@ namespace NudityMattersMore_opinions
                 if (ext.requiredObserverLifeStage != null && actualObserver.ageTracker != null && actualObserver.ageTracker.CurLifeStage == ext.requiredObserverLifeStage) { currentWeight += 5; }
                 if (!string.IsNullOrEmpty(ext.requiredObserverQuirk))
                 {
-                    Quirk targetQuirk = rjw.Quirk.All.FirstOrDefault(q => q.Key == ext.requiredObserverQuirk || q.LocaliztionKey == ext.requiredObserverQuirk);
-                    if (targetQuirk != null && rjw.PawnExtensions.Has(actualObserver, targetQuirk)) { currentWeight += 15; }
+                    // ИСПРАВЛЕНО: Использование кэшированного словаря для быстрого поиска квирков
+                    if (_cachedQuirks.TryGetValue(ext.requiredObserverQuirk, out Quirk targetQuirk) && rjw.PawnExtensions.Has(actualObserver, targetQuirk)) { currentWeight += 15; }
                 }
                 if (ext.requiredObserverMinBiologicalAge > 0 && actualObserver.ageTracker != null && actualObserver.ageTracker.AgeBiologicalYears >= ext.requiredObserverMinBiologicalAge) { currentWeight += 5; }
                 if (ext.requiredObserverMaxBiologicalAge > 0 && actualObserver.ageTracker != null && actualObserver.ageTracker.AgeBiologicalYears <= ext.requiredObserverMaxBiologicalAge) { currentWeight += 5; }
                 if (ext.requiredObserverNeedSexState != NeedSexState.Any && GetNeedSexState(actualObserver) == ext.requiredObserverNeedSexState) { currentWeight += 10; }
                 if (ext.requiredObserverDressState != DressState.Clothed)
                 {
-                    if (actualObserver != null && GetPawnDressState(actualObserver) == ext.requiredObserverDressState)
+                    if (currentObserverDressState == ext.requiredObserverDressState)
                     {
                         currentWeight += 10;
                     }
                 }
                 if (ext.requiredObserverIsCovering.HasValue)
                 {
-                    bool observerIsCovering = (actualObserver != null && NudityMattersMore.InfoHelper.IsCovering(actualObserver, out _));
-                    if (actualObserver != null && observerIsCovering == ext.requiredObserverIsCovering.Value)
+                    bool observerIsCovering = NudityMattersMore.InfoHelper.IsCovering(actualObserver, out _);
+                    if (observerIsCovering == ext.requiredObserverIsCovering.Value)
                     {
                         currentWeight += 10;
                     }
@@ -873,6 +918,7 @@ namespace NudityMattersMore_opinions
                         currentWeight += 20;
                     }
                 }
+                if (ext.requiredObserverRelation != null && actualObserver.relations.DirectRelationExists(ext.requiredObserverRelation, actualObserved)) { currentWeight += 5; }
 
 
                 // --- Check and weigh conditions for the Observable (actualObserved) ---
@@ -886,8 +932,8 @@ namespace NudityMattersMore_opinions
                 if (ext.requiredObservedNeedSexState != NeedSexState.Any && GetNeedSexState(actualObserved) == ext.requiredObservedNeedSexState) { currentWeight += 10; }
                 if (ext.requiredObservedIsCovering.HasValue)
                 {
-                    bool observedIsCovering = (actualObserved != null && NudityMattersMore.InfoHelper.IsCovering(actualObserved, out _));
-                    if (actualObserved != null && observedIsCovering == ext.requiredObservedIsCovering.Value)
+                    bool observedIsCovering = NudityMattersMore.InfoHelper.IsCovering(actualObserved, out _);
+                    if (observedIsCovering == ext.requiredObservedIsCovering.Value)
                     {
                         currentWeight += 10;
                     }
@@ -900,16 +946,16 @@ namespace NudityMattersMore_opinions
                         currentWeight += 20;
                     }
                 }
+                if (ext.requiredObservedRelation != null && actualObserved.relations.DirectRelationExists(ext.requiredObservedRelation, actualObserver)) { currentWeight += 5; }
 
-
-                weighedCandidateOpinions.Add((opinionDef, currentWeight));
+                finalWeighedCandidateOpinions.Add((opinionDef, currentWeight));
             }
 
             OpinionDef_Situational selectedOpinionDef = null;
-            if (weighedCandidateOpinions.Any())
+            if (finalWeighedCandidateOpinions.Any())
             {
-                int maxWeight = weighedCandidateOpinions.Max(x => x.weight);
-                var bestOpinions = weighedCandidateOpinions.Where(x => x.weight == maxWeight).ToList();
+                int maxWeight = finalWeighedCandidateOpinions.Max(x => x.weight);
+                var bestOpinions = finalWeighedCandidateOpinions.Where(x => x.weight == maxWeight).ToList();
                 selectedOpinionDef = bestOpinions.RandomElement().def;
             }
 
@@ -968,7 +1014,7 @@ namespace NudityMattersMore_opinions
         /// </summary>
         private static NeedSexState GetNeedSexState(Pawn pawn)
         {
-            if (!ModLister.HasActiveModWithName("RimJobWorld") || pawn?.needs == null)
+            if (!IsRjwActive || pawn?.needs == null)
             {
                 return NeedSexState.Any;
             }
@@ -993,7 +1039,7 @@ namespace NudityMattersMore_opinions
             }
             else
             {
-                return NeedSexState.Satisfied; 
+                return NeedSexState.Satisfied;
             }
         }
 
@@ -1041,7 +1087,7 @@ namespace NudityMattersMore_opinions
         /// </summary>
         private static float GetPartSeverity(Pawn pawn, BodyPartDef part)
         {
-            if (pawn == null || part == null || !ModLister.HasActiveModWithName("RimJobWorld")) return 0f;
+            if (pawn == null || part == null || !IsRjwActive) return 0f;
 
             ISexPartHediff sexHediff = null;
             List<Hediff> allSexHediffsOnPawn = rjw.Genital_Helper.get_AllPartsHediffList(pawn);
@@ -1080,7 +1126,7 @@ namespace NudityMattersMore_opinions
         /// </summary>
         private static GenitalFamily GetGenitalFamily(Pawn pawn, BodyPartDef part)
         {
-            if (pawn == null || part == null || !ModLister.HasActiveModWithName("RimJobWorld")) return GenitalFamily.Undefined;
+            if (pawn == null || part == null || !IsRjwActive) return GenitalFamily.Undefined;
 
             List<Hediff> allSexHediffsOnPawn = rjw.Genital_Helper.get_AllPartsHediffList(pawn);
             ISexPartHediff sexHediff = null;

@@ -26,13 +26,10 @@ namespace NudityMattersMore_opinions
 
         static InteractionDefCache()
         {
-            // Заполняем наши кэшированные словари настоящими Def-ами
             FillCache(DefsForPawnBeingObserved_Dynamic_Names, DefsForPawnBeingObserved_Dynamic);
             FillCache(DefsForObservingPawn_Dynamic_Names, DefsForObservingPawn_Dynamic);
             FillCache(DefsForPawnBeingObserved_Fallback_Names, DefsForPawnBeingObserved_Fallback);
             FillCache(DefsForObservingPawn_Fallback_Names, DefsForObservingPawn_Fallback);
-
-            ModLog.Message("[NMM Opinions] InteractionDefCache: Caching complete.");
         }
 
         private static void FillCache(Dictionary<InteractionType, string> source, Dictionary<InteractionType, InteractionDef> destination)
@@ -44,10 +41,6 @@ namespace NudityMattersMore_opinions
                 {
                     destination[kvp.Key] = def;
                 }
-                else
-                {
-                    Log.Warning($"[NMM Opinions] InteractionDefCache: Could not find InteractionDef named '{kvp.Value}' for InteractionType '{kvp.Key}'.");
-                }
             }
         }
     }
@@ -57,14 +50,12 @@ namespace NudityMattersMore_opinions
     {
         private static readonly bool IsEnabled;
 
-        // --- Cooldowns ---
-        private const int GlobalCommentCooldownTicks = 300;
-        private const int RecipientReactionCooldownTicks = 450;
-        private const int InteractionCooldownTicks = 15000;
+        // Кулдаун для конкретного взаимодействия (инициатор, цель, тип)
+        private static Dictionary<Tuple<Pawn, Pawn, InteractionType>, int> interactionCooldownExpiry = new Dictionary<Tuple<Pawn, Pawn, InteractionType>, int>();
 
-        private static Dictionary<Pawn, int> pawnGlobalCooldownExpiry = new Dictionary<Pawn, int>();
-        private static Dictionary<Tuple<Pawn, Pawn>, int> lastObserverCommentTick = new Dictionary<Tuple<Pawn, Pawn>, int>();
-        private static Dictionary<Tuple<Pawn, Pawn>, int> lastObservedCommentTick = new Dictionary<Tuple<Pawn, Pawn>, int>();
+        // Счетчик мнений, высказанных пешкой за один "проход" для ограничения спама
+        private static Dictionary<Pawn, int> opinionsThisTick = new Dictionary<Pawn, int>();
+        private static int lastTickProcessed = -1;
 
         private const int QueueProcessInterval = 60;
         private static Queue<Action> commentaryQueue = new Queue<Action>();
@@ -75,7 +66,6 @@ namespace NudityMattersMore_opinions
         {
             if (ModLister.GetActiveModWithIdentifier("JPT.speakup") == null)
             {
-                ModLog.Message("[NMM Opinions - Fixation Log] 'SpeakUp' mod not found. Commentary feature will be disabled.");
                 IsEnabled = false;
                 return;
             }
@@ -84,13 +74,22 @@ namespace NudityMattersMore_opinions
             var harmony = new Harmony("shark510.nuditymattersmoreopinions.nmmo.fixationlog");
             harmony.Patch(AccessTools.Method(typeof(PawnInteractionManager), "ProcessInteraction"), postfix: new HarmonyMethod(typeof(NMMFixationLogPatches), nameof(ProcessInteraction_Postfix)));
             harmony.Patch(AccessTools.Method(typeof(TickManager), "DoSingleTick"), postfix: new HarmonyMethod(typeof(NMMFixationLogPatches), nameof(ProcessQueue_Postfix)));
-            ModLog.Message("[NMM Opinions - Fixation Log] Patches successfully applied. 'SpeakUp' mod found.");
         }
 
         public static void ProcessQueue_Postfix()
         {
             if (!IsEnabled) return;
-            if (Find.TickManager.TicksGame % QueueProcessInterval == 0 && commentaryQueue.Any())
+
+            int currentTick = Find.TickManager.TicksGame;
+
+            // Очищаем счетчик одновременных мнений в начале каждого нового цикла обработки
+            if (currentTick > lastTickProcessed)
+            {
+                opinionsThisTick.Clear();
+                lastTickProcessed = currentTick;
+            }
+
+            if (currentTick % QueueProcessInterval == 0 && commentaryQueue.Any())
             {
                 commentaryQueue.Dequeue().Invoke();
             }
@@ -109,10 +108,16 @@ namespace NudityMattersMore_opinions
             }
 
             // --- ОБРАБОТКА ДЛЯ НАБЛЮДАТЕЛЯ (Observer) ---
-            if (!IsPawnInSameNudeState(observer, interactionType))
+            bool observerInSameNudeState = IsPawnInSameNudeState(observer, interactionType);
+
+            // Новая проверка: если настройка выключена и оба в одинаковом состоянии, не комментируем
+            if (!NudityMattersMore_opinions_Mod.settings.allowCommentOnSameState && observerInSameNudeState && IsPawnInSameNudeState(observed, interactionType))
+            {
+                // Пропускаем, если оба в одинаковом состоянии и это запрещено настройками
+            }
+            else if (!observerInSameNudeState)
             {
                 string rawTextObserver = SituationalOpinionHelper.SelectOpinionTextForBubble(observer, observed, interactionType, PawnState.None, aware, false, OpinionPerspective.UsedForObserver);
-
                 InteractionDef defObserver = null;
                 if (!string.IsNullOrEmpty(rawTextObserver))
                 {
@@ -125,7 +130,7 @@ namespace NudityMattersMore_opinions
 
                 if (defObserver != null)
                 {
-                    TryQueueCommentary(observer, observed, defObserver, rawTextObserver, lastObserverCommentTick, observer, observed);
+                    TryQueueCommentary(observer, observed, interactionType, defObserver, rawTextObserver, observer, observed);
                 }
             }
 
@@ -133,7 +138,6 @@ namespace NudityMattersMore_opinions
             if (aware)
             {
                 string rawTextObserved = SituationalOpinionHelper.SelectOpinionTextForBubble(observed, observer, interactionType, PawnState.None, aware, false, OpinionPerspective.UsedForObserved);
-
                 InteractionDef defObserved = null;
                 if (!string.IsNullOrEmpty(rawTextObserved))
                 {
@@ -146,58 +150,62 @@ namespace NudityMattersMore_opinions
 
                 if (defObserved != null)
                 {
-                    TryQueueCommentary(observed, observer, defObserved, rawTextObserved, lastObservedCommentTick, observer, observed);
+                    TryQueueCommentary(observed, observer, interactionType, defObserved, rawTextObserved, observer, observed);
                 }
             }
         }
 
-        private static void TryQueueCommentary(Pawn initiator, Pawn recipient, InteractionDef interactionDef, string rawOpinionText, Dictionary<Tuple<Pawn, Pawn>, int> specificCooldownDict, Pawn originalObserver, Pawn originalObserved)
+        private static void TryQueueCommentary(Pawn initiator, Pawn recipient, InteractionType interactionType, InteractionDef interactionDef, string rawOpinionText, Pawn originalObserver, Pawn originalObserved)
         {
             int currentTick = Find.TickManager.TicksGame;
 
-            if (pawnGlobalCooldownExpiry.TryGetValue(initiator, out int expiryTick) && currentTick < expiryTick) return;
-
-            var pair = Tuple.Create(initiator, recipient);
-            if (specificCooldownDict.TryGetValue(pair, out int lastTick) && currentTick - lastTick < InteractionCooldownTicks) return;
-
-            if (initiator == null || recipient == null)
+            // Проверка на лимит одновременных мнений
+            if (opinionsThisTick.TryGetValue(initiator, out int count) && count >= NudityMattersMore_opinions_Mod.settings.maxSimultaneousOpinions)
             {
-                Log.Warning($"[NMM Opinions] Skipping commentary for null pawn. Initiator: {initiator?.LabelCap ?? "null"}, Recipient: {recipient?.LabelCap ?? "null"}");
                 return;
             }
 
-            commentaryQueue.Enqueue(() => FireSingleCommentary(initiator, recipient, interactionDef, rawOpinionText, pair, specificCooldownDict, originalObserver, originalObserved));
+            // Проверка кулдауна для конкретного взаимодействия
+            var key = Tuple.Create(initiator, recipient, interactionType);
+            if (interactionCooldownExpiry.TryGetValue(key, out int expiryTick) && currentTick < expiryTick)
+            {
+                return;
+            }
+
+            if (initiator == null || recipient == null)
+            {
+                return;
+            }
+            // ИСПРАВЛЕНО: Передаем interactionType в очередь
+            commentaryQueue.Enqueue(() => FireSingleCommentary(initiator, recipient, interactionType, interactionDef, rawOpinionText, originalObserver, originalObserved));
         }
-
-        private static void FireSingleCommentary(Pawn initiator, Pawn recipient, InteractionDef interactionDef, string rawOpinionText, Tuple<Pawn, Pawn> pair, Dictionary<Tuple<Pawn, Pawn>, int> cooldownDict, Pawn originalObserver, Pawn originalObserved)
+        // ИСПРАВЛЕНО: Добавлен параметр interactionType
+        private static void FireSingleCommentary(Pawn initiator, Pawn recipient, InteractionType interactionType, InteractionDef interactionDef, string rawOpinionText, Pawn originalObserver, Pawn originalObserved)
         {
-
-            // Добавляем проверку на null для initiator и recipient в самом начале метода
-            if (initiator == null || recipient == null)
+            if (initiator == null || recipient == null || interactionDef == null)
             {
-                Log.Warning($"[NMM Opinions] FireSingleCommentary skipped due to null pawn. Initiator: {initiator?.LabelCap ?? "null"}, Recipient: {recipient?.LabelCap ?? "null"}");
                 return;
             }
 
-
+            // Повторная проверка кулдаунов
             int currentTick = Find.TickManager.TicksGame;
-            if (pawnGlobalCooldownExpiry.TryGetValue(initiator, out int expiryTick) && currentTick < expiryTick)
+            // ИСПРАВЛЕНО: Используем переданный interactionType для создания ключа
+            var key = Tuple.Create(initiator, recipient, interactionType);
+            if (interactionCooldownExpiry.TryGetValue(key, out int expiryTick) && currentTick < expiryTick)
             {
                 return;
             }
 
-            if (interactionDef == null)
+            // Повторная проверка лимита одновременных мнений
+            if (opinionsThisTick.TryGetValue(initiator, out int count) && count >= NudityMattersMore_opinions_Mod.settings.maxSimultaneousOpinions)
             {
                 return;
             }
 
-            // --- ИЗМЕНЕНИЕ ЛОГИКИ ---
-            // Мы создаем информацию для динамической замены текста ТОЛЬКО если этот текст существует.
-            // Если rawOpinionText пустой, значит мы используем стандартный (fallback) InteractionDef,
-            // и наша система динамической замены не должна вмешиваться.
+            DynamicLogTextInfo dynamicTextInfo = null;
             if (!string.IsNullOrEmpty(rawOpinionText))
             {
-                LastDynamicTextInfo = new DynamicLogTextInfo
+                dynamicTextInfo = new DynamicLogTextInfo
                 {
                     RawText = rawOpinionText,
                     OriginalObserver = originalObserver,
@@ -205,23 +213,32 @@ namespace NudityMattersMore_opinions
                     BodyPart = SituationalOpinionHelper.LastObservedBodyPartDef
                 };
             }
-            else
-            {
-                // Для стандартных InteractionDef убеждаемся, что информация для замены пуста.
-                LastDynamicTextInfo = null;
-            }
 
+            LastDynamicTextInfo = dynamicTextInfo;
 
-            if (initiator.interactions.TryInteractWith(recipient, interactionDef))
+            try
             {
-                currentTick = Find.TickManager.TicksGame;
-                cooldownDict[pair] = currentTick;
-                pawnGlobalCooldownExpiry[initiator] = currentTick + GlobalCommentCooldownTicks;
-                pawnGlobalCooldownExpiry[recipient] = currentTick + RecipientReactionCooldownTicks;
+                if (initiator.interactions.TryInteractWith(recipient, interactionDef))
+                {
+                    currentTick = Find.TickManager.TicksGame;
+
+                    // Обновляем кулдаун для этого конкретного взаимодействия
+                    int cooldownTicks = (int)(NudityMattersMore_opinions_Mod.settings.commentaryCooldownSeconds * 60);
+                    interactionCooldownExpiry[key] = currentTick + cooldownTicks;
+
+                    // Увеличиваем счетчик мнений за этот тик
+                    if (opinionsThisTick.ContainsKey(initiator))
+                    {
+                        opinionsThisTick[initiator]++;
+                    }
+                    else
+                    {
+                        opinionsThisTick[initiator] = 1;
+                    }
+                }
             }
-            else
+            finally
             {
-                // Если по какой-то причине взаимодействие не удалось, всегда очищаем информацию.
                 LastDynamicTextInfo = null;
             }
         }

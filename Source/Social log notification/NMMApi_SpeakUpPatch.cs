@@ -68,6 +68,18 @@ namespace NudityMattersMore_opinions
             // Проверяем, есть ли у нас сохраненная информация для этой конкретной записи в журнале.
             if (DynamicLogTextStore.storedInfo.TryGetValue(__instance, out DynamicLogTextInfo info))
             {
+                // *** ДОБАВЛЕНА ПРОВЕРКА НА NULL ДЛЯ ПЕШЕК ***
+                // Если OriginalObserver или OriginalObserved оказались null,
+                // это означает, что данные некорректны. В этом случае
+                // мы позволяем оригинальному методу выполниться, чтобы избежать NRE.
+                if (info.OriginalObserver == null || info.OriginalObserved == null)
+                {
+                    // ИСПРАВЛЕНО: Использование ToLabel() вместо Label для PlayLogEntry_Interaction
+                    Log.Warning($"[NMM Opinions] Dynamic log text info has null observer or observed pawn. Falling back to original method to prevent NRE.");
+                    DynamicLogTextStore.storedInfo.Remove(__instance); // Очищаем некорректную запись
+                    return true; // Позволяем оригинальному методу выполниться
+                }
+
                 // Мы нашли нашу информацию! Теперь мы обрабатываем текст, передавая правильные роли изначального события.
                 // Это исправляет ошибку, когда Анна "видела Анну".
                 __result = SituationalOpinionHelper.ProcessOpinionText(

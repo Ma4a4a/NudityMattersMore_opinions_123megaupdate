@@ -18,14 +18,13 @@ namespace NudityMattersMore_opinions
         // Setting to enable/disable comments from our patch
         public bool enableFixationLogComments = true;
 
+        // НОВЫЕ НАСТРОЙКИ
+        public float commentaryCooldownSeconds = 60f;
+        public int maxSimultaneousOpinions = 2;
+        public bool allowCommentOnSameState = false;
+
         // Setting to enable/disable debug logs
         public bool enableDebugLogging = false;
-
-        // Other settings
-        public bool enableAllOpinionsFromAllPawns = true;
-        public float chanceObserverOrObservedOpinion = 50f;
-        public bool displayBothObserverAndObservedOpinion = false;
-        public float chancePrivatePartDescription = 20f;
 
         // Dictionary to store the toggle state for each interaction commentary.
         public Dictionary<string, bool> enabledInteractionToggles;
@@ -47,47 +46,36 @@ namespace NudityMattersMore_opinions
             Scribe_Values.Look(ref chanceOfGeneratedOpinion, "chanceOfGeneratedOpinion", 50f);
             Scribe_Values.Look(ref enableFixationLogComments, "enableFixationLogComments", true);
             Scribe_Values.Look(ref enableDebugLogging, "enableDebugLogging", false);
-            Scribe_Values.Look(ref enableAllOpinionsFromAllPawns, "enableAllOpinionsFromAllPawns", true);
-            Scribe_Values.Look(ref chanceObserverOrObservedOpinion, "chanceObserverOrObservedOpinion", 50f);
-            Scribe_Values.Look(ref displayBothObserverAndObservedOpinion, "displayBothObserverAndObservedOpinion", false);
-            Scribe_Values.Look(ref chancePrivatePartDescription, "chancePrivatePartDescription", 20f);
+
+            // Сохранение и загрузка новых настроек
+            Scribe_Values.Look(ref commentaryCooldownSeconds, "commentaryCooldownSeconds", 60f);
+            Scribe_Values.Look(ref maxSimultaneousOpinions, "maxSimultaneousOpinions", 2);
+            Scribe_Values.Look(ref allowCommentOnSameState, "allowCommentOnSameState", false);
 
             // Save and load the dictionary of toggles.
             Scribe_Collections.Look(ref enabledInteractionToggles, "enabledInteractionToggles", LookMode.Value, LookMode.Value);
 
-            // If the dictionary is null after loading (e.g., first time running with this update), initialize it.
             if (Scribe.mode == LoadSaveMode.PostLoadInit && enabledInteractionToggles == null)
             {
                 InitializeInteractionToggles();
             }
         }
 
-        /// <summary>
-        /// Initializes the dictionary with all toggleable interactions set to their default states.
-        /// </summary>
         public void InitializeInteractionToggles()
         {
             enabledInteractionToggles = new Dictionary<string, bool>();
             foreach (InteractionType type in Enum.GetValues(typeof(InteractionType)))
             {
-                // Set default value based on the SensitiveInteractions list.
-                // If it's in the list, default to false, otherwise true.
                 enabledInteractionToggles[type.ToString()] = !SensitiveInteractions.Contains(type);
             }
         }
 
-        /// <summary>
-        /// Checks if a specific interaction type is allowed to generate commentary.
-        /// </summary>
         public bool IsInteractionEnabled(InteractionType type)
         {
-            // Ensure the dictionary is initialized.
             if (enabledInteractionToggles == null)
             {
                 InitializeInteractionToggles();
             }
-
-            // Return the value from the dictionary, defaulting to false if not found.
             return enabledInteractionToggles.TryGetValue(type.ToString(), out bool enabled) && enabled;
         }
 
@@ -98,11 +86,12 @@ namespace NudityMattersMore_opinions
             chanceOfGeneratedOpinion = 50f;
             enableFixationLogComments = true;
             enableDebugLogging = false;
-            enableAllOpinionsFromAllPawns = true;
-            chanceObserverOrObservedOpinion = 50f;
-            displayBothObserverAndObservedOpinion = false;
-            chancePrivatePartDescription = 20f;
-            // Reset the toggles as well.
+
+            // Сброс новых настроек
+            commentaryCooldownSeconds = 60f;
+            maxSimultaneousOpinions = 2;
+            allowCommentOnSameState = false;
+
             InitializeInteractionToggles();
         }
     }
@@ -112,7 +101,6 @@ namespace NudityMattersMore_opinions
     {
         public static NudityMattersMore_opinions_ModSettings settings;
 
-        // Enum and variable for managing settings tabs
         private enum SettingsTab { General, Interactions }
         private SettingsTab _tab = SettingsTab.General;
         private Vector2 _scrollPosition = Vector2.zero;
@@ -122,32 +110,22 @@ namespace NudityMattersMore_opinions
             settings = GetSettings<NudityMattersMore_opinions_ModSettings>();
         }
 
-        // Method for creating the settings window
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            // The game draws the main window title automatically from SettingsCategory().
-            // We will draw our tabs at the top right of the content area (inRect).
-
-            // 1. Define the list of tabs.
             List<TabRecord> tabs = new List<TabRecord>
             {
                 new TabRecord("General", () => _tab = SettingsTab.General, _tab == SettingsTab.General),
                 new TabRecord("Interactions", () => _tab = SettingsTab.Interactions, _tab == SettingsTab.Interactions)
             };
 
-            // 2. Define the area for the tabs at the top-right.
             float tabWidth = 120f;
             float totalTabsWidth = tabWidth * tabs.Count;
             Rect tabsRect = new Rect(inRect.x + inRect.width - totalTabsWidth, inRect.y, totalTabsWidth, 32f);
-
-            // 3. Draw the tabs in their own rect. This will not overlap the main window title.
             TabDrawer.DrawTabs(tabsRect, tabs);
 
-            // 4. Define the content area below the tab bar line.
             Rect contentRect = new Rect(inRect);
             contentRect.yMin = inRect.y + 32f;
 
-            // 5. Draw the content for the selected tab.
             switch (_tab)
             {
                 case SettingsTab.General:
@@ -164,28 +142,44 @@ namespace NudityMattersMore_opinions
             Listing_Standard listing = new Listing_Standard();
             listing.Begin(inRect);
 
-            // MODIFIED: Removed the redundant title from this tab.
-
+            // --- Секция генератора мнений ---
             listing.Label("NMM Opinions Generator Settings");
-            Text.Font = GameFont.Small;
-            listing.Gap(8f);
+            listing.Gap(4f);
             listing.CheckboxLabeled("Use situational opinion generator", ref settings.enableSituationalOpinionGenerator, "If disabled, only predefined opinions will be displayed. Default true.");
             Rect chanceGeneratedRect = listing.GetRect(30f);
-            settings.chanceOfGeneratedOpinion = Widgets.HorizontalSlider(chanceGeneratedRect, settings.chanceOfGeneratedOpinion, 0f, 100f, true, $"Chance of generated opinion: {settings.chanceOfGeneratedOpinion:F0}%", "0% Generated opinions will not appear", "100% Will show only generated opinions", 1f);
-            listing.Label("(If 0%, generator still will be used, if action is not predefined in xml.)");
-            listing.Gap(8f);
+            settings.chanceOfGeneratedOpinion = Widgets.HorizontalSlider(chanceGeneratedRect, settings.chanceOfGeneratedOpinion, 0f, 100f, true, $"Chance of generated opinion: {settings.chanceOfGeneratedOpinion:F0}%", "0%", "100%", 1f);
+            listing.Gap(12f);
 
-            listing.Gap(24f);
             listing.GapLine();
             listing.Gap(12f);
+
+            // --- Секция комментариев ---
             Text.Font = GameFont.Medium;
             listing.Label("Fixation Log Commentary Settings");
             Text.Font = GameFont.Small;
             listing.Gap(8f);
+
             bool speakUpActive = ModLister.GetActiveModWithIdentifier("JPT.speakup") != null;
             if (speakUpActive)
             {
-                listing.CheckboxLabeled("Enable pawn commentary on observed actions", ref settings.enableFixationLogComments, "Enables pawns to comment on what they see (e.g., seeing someone in the shower). Requires the 'SpeakUp' mod. Default: true.");
+                listing.CheckboxLabeled("Enable pawn commentary on observed actions", ref settings.enableFixationLogComments, "Enables pawns to comment on what they see. Requires the 'SpeakUp' mod. Default: true.");
+
+                // Добавляем новые настройки сюда, если SpeakUp активен
+                if (settings.enableFixationLogComments)
+                {
+                    listing.Gap(12f);
+
+                    // Слайдер кулдауна
+                    Rect cooldownRect = listing.GetRect(30f);
+                    settings.commentaryCooldownSeconds = Widgets.HorizontalSlider(cooldownRect, settings.commentaryCooldownSeconds, 0f, 300f, true, $"Commentary Cooldown: {settings.commentaryCooldownSeconds:F0} sec", "0s", "300s (5 min)", 1f);
+
+                    // Слайдер макс. мнений
+                    Rect maxOpinionsRect = listing.GetRect(30f);
+                    settings.maxSimultaneousOpinions = (int)Widgets.HorizontalSlider(maxOpinionsRect, settings.maxSimultaneousOpinions, 1f, 10f, true, $"Max Simultaneous Opinions: {settings.maxSimultaneousOpinions}", "1", "10", 1f);
+
+                    // Чекбокс для комментирования в том же состоянии
+                    listing.CheckboxLabeled("Allow comment on pawn in same state", ref settings.allowCommentOnSameState, "If enabled, a naked pawn can comment on another naked pawn, etc. Default: false.");
+                }
             }
             else
             {
@@ -197,6 +191,8 @@ namespace NudityMattersMore_opinions
             listing.Gap(24f);
             listing.GapLine();
             listing.Gap(12f);
+
+            // --- Секция отладки ---
             Text.Font = GameFont.Medium;
             listing.Label("Debugging");
             Text.Font = GameFont.Small;
@@ -221,7 +217,6 @@ namespace NudityMattersMore_opinions
 
             if (settings.enabledInteractionToggles == null) settings.InitializeInteractionToggles();
 
-            // --- Sensitive Interactions Section ---
             listing.Gap(12f);
             Text.Font = GameFont.Medium;
             listing.Label("Problematic Interactions");
@@ -243,7 +238,6 @@ namespace NudityMattersMore_opinions
                 settings.enabledInteractionToggles[key] = value;
             }
 
-            // --- Other Commentaries Section ---
             listing.Gap(24f);
             listing.GapLine();
             listing.Gap(12f);
@@ -255,10 +249,9 @@ namespace NudityMattersMore_opinions
             float scrollViewHeight = inRect.height - listing.CurHeight - 10f;
             Rect scrollViewOuterRect = listing.GetRect(scrollViewHeight);
 
-            // MODIFIED: Filter out sensitive interactions for the main list
             var otherToggles = settings.enabledInteractionToggles.Keys
                 .Where(k => !NudityMattersMore_opinions_ModSettings.SensitiveInteractions.Contains((InteractionType)Enum.Parse(typeof(InteractionType), k)))
-                .OrderBy(k => k) // Sort alphabetically for consistency
+                .OrderBy(k => k)
                 .ToList();
 
             Rect scrollViewInnerRect = new Rect(0, 0, scrollViewOuterRect.width - 16f, otherToggles.Count * 28f);
@@ -280,7 +273,6 @@ namespace NudityMattersMore_opinions
             listing.End();
         }
 
-        // MODIFIED: Restored the SettingsCategory override to make the mod appear in the settings list.
         public override string SettingsCategory()
         {
             return "Nudity Matters More: Opinions";
