@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Manifest>
+	<identifier>Nudity Matters More opinions</identifier>
+	<version>1.0.1</version>
+	<dependencies/>
+	<incompatibleWith/>
+	<loadAfter/>
+	<suggests/>
+	<manifestUri>https://github.com/MiruKoto/NudityMattersMore_opinions/About/Manifest.xml</manifestUri>
+	<downloadUri>https://github.com/MiruKoto/NudityMattersMore_opinions</downloadUri>
+</Manifest>
