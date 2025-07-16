@@ -1,9 +1,11 @@
 ﻿using NudityMattersMore; //  InfoHelper, PawnInteractionManager, DressState, InteractionType, PawnState, TabGender
+using NudityMattersMore_opinions.CalculationHelpers;
 using RimWorld; // TraitDef, PawnKindDef, LifeStageDef, Need_Sex (for thresh_*), HediffDefOf, PawnRelationDefOf
 using rjw; // Quirk, Genital_Helper, ISexPartHediff, HediffComp_SexPart
 using System; // Exception
 using System.Collections.Generic; //  List, Dictionary
 using System.Linq; //  LINQ
+using System.Runtime.InteropServices;
 using Verse;
 
 namespace NudityMattersMore_opinions
@@ -29,11 +31,15 @@ namespace NudityMattersMore_opinions
         // --- КЭШИРОВАНИЕ КВИРКОВ ДЛЯ БЫСТРОГО ПОИСКА ---
         private static readonly Dictionary<string, Quirk> _cachedQuirks = new Dictionary<string, Quirk>();
 
-        // Переменная для кеширования статуса RJW
-        private static readonly bool IsRjwActive;
+        private static readonly bool IsrjwsexperienceideologyActive;
+
+        public static readonly bool IsRjwActive;
+
+        public static readonly bool IsPrivacyPleaseActive;
 
         static SituationalOpinionHelper()
         {
+
             // Заполняем кэш квирков при старте мода
             foreach (var quirk in rjw.Quirk.All)
             {
@@ -48,6 +54,8 @@ namespace NudityMattersMore_opinions
             }
             // Проверяем активность RJW один раз и сохраняем результат
             IsRjwActive = ModLister.HasActiveModWithName("RimJobWorld");
+            IsrjwsexperienceideologyActive = ModLister.HasActiveModWithName("rjw.sexperience.ideology");
+            IsPrivacyPleaseActive = ModLister.HasActiveModWithName("abscon.privacy.please");
         }
 
 
@@ -148,7 +156,7 @@ namespace NudityMattersMore_opinions
             }
 
             // Define opinoin category
-            OpinionCategory category = GetOpinionCategory(opinionSubjectPawn, opinionTargetPawn);
+            OpinionCategory category = OpinionCategoryCalculator.GetCategory(opinionSubjectPawn, opinionTargetPawn);
 
 
             // Get visible body parts for the generator
@@ -577,15 +585,15 @@ namespace NudityMattersMore_opinions
                 bool tryToGenerate = NudityMattersMore_opinions_Mod.settings.enableSituationalOpinionGenerator &&
                                      random.NextDouble() * 100 < NudityMattersMore_opinions_Mod.settings.chanceOfGeneratedOpinion;
 
+                // СТАЛО (правильно):
                 if (tryToGenerate)
                 {
-
-                    // Trying to generate. If it doesn't work, a prepared opinion will be used below.
-                    OpinionCategory opinionCategory = GetOpinionCategory(actualObserver, actualObserved);
+                    // Используем правильные переменные из текущего метода
+                    OpinionCategory category = OpinionCategoryCalculator.GetCategory(actualObserver, actualObserved);
                     List<Tuple<BodyPartDef, float, string, GenitalFamily>> visibleBodyParts = GetVisibleBodyPartsData(actualObserver, actualObserved);
                     finalOpinionText = SituationalOpinionGenerator.GenerateFullOpinion(
                         actualObserver, actualObserved, interactionType, pawnState, aware,
-                        isSelfObservation, opinionCategory, visibleBodyParts, requiredPerspective);
+                        isSelfObservation, category, visibleBodyParts, requiredPerspective); // Переменная category теперь тоже правильная
                 }
 
                 // If the generator was not used (disabled, did not have a chance, or could not create anything), we use the prepared opinion.
@@ -596,15 +604,17 @@ namespace NudityMattersMore_opinions
                 }
             }
             // Scenario 2: Predefined opinion NOT found. Generator becomes primary source.
-            else
+            // СТАЛО (правильно):
+            else // Scenario 2
             {
                 if (NudityMattersMore_opinions_Mod.settings.enableSituationalOpinionGenerator)
                 {
-                    OpinionCategory opinionCategory = GetOpinionCategory(actualObserver, actualObserved);
+                    // Вызываем новый централизованный калькулятор
+                    OpinionCategory category = OpinionCategoryCalculator.GetCategory(actualObserver, actualObserved);
                     List<Tuple<BodyPartDef, float, string, GenitalFamily>> visibleBodyParts = GetVisibleBodyPartsData(actualObserver, actualObserved);
                     finalOpinionText = SituationalOpinionGenerator.GenerateFullOpinion(
                         actualObserver, actualObserved, interactionType, pawnState, aware,
-                        isSelfObservation, opinionCategory, visibleBodyParts, requiredPerspective);
+                        isSelfObservation, category, visibleBodyParts, requiredPerspective);
                 }
             }
 
@@ -980,18 +990,12 @@ namespace NudityMattersMore_opinions
         /// Helper method for determining opinion category (Positive, Negative, Neutral).
         /// This logic can be extended based on relationships, character traits, etc.
         /// </summary>
-        private static OpinionCategory GetOpinionCategory(Pawn opinionPawn, Pawn targetPawn)
-        {
-            // More complex logic can be added here, for example based on relationships
-            // or personality traits. For simplicity, we'll use RimWorld relationships for now.
-            if (opinionPawn == null || targetPawn == null) return OpinionCategory.Neutral;
+        /// <summary>
+        /// Определяет категорию мнения (Позитивная, Негативная, Нейтральная) на основе взвешенной системы.
+        /// </summary>
+        /// 
 
-            int opinionOfTarget = opinionPawn.relations.OpinionOf(targetPawn);
-
-            if (opinionOfTarget >= 15) return OpinionCategory.Positive;
-            if (opinionOfTarget <= -15) return OpinionCategory.Negative;
-            return OpinionCategory.Neutral;
-        }
+        
 
         /// <summary>
         /// Gets the current pregnancy trimester from Hediff_Pregnant.

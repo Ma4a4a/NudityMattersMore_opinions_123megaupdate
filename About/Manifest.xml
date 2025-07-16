@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
 	<identifier>Nudity Matters More opinions</identifier>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<dependencies/>
 	<incompatibleWith/>
 	<loadAfter/>
@@ -9,3 +9,38 @@
 	<manifestUri>https://github.com/MiruKoto/NudityMattersMore_opinions/blob/main/About/Manifest.xml</manifestUri>
 	<downloadUri>https://github.com/MiruKoto/NudityMattersMore_opinions</downloadUri>
 </Manifest>
+
+
+<!-- Version History:
+
+Nudity Matters More opinions 1.0.3
+Rimworld 1.5
+
+Fixes:
+Fixed bug - mod was saving last observed name in filter while loading another save. (Creatrick reported that issue)
+Reworked Nudity tab situational opinion log. Now it is more responsive, easier to navigate and scroll.
+Total refactoring, centralized opinion filter for private parts and situations. (easier for fine tune or add new weights)
+
+Improvement:
+Reworked opinion selection (positive, neutral, negative).
+Now there is complex calculations for opinoin mood, like gender, atractivness, social relations,
+traits, ideology percepts, age, etc. (still need balancing, for more real feel)
+
+
+
+-------------------
+Nudity Matters More opinions 1.0.2
+Rimworld 1.5
+
+Performance optimizations.
+
+Opinions in bubbles now must perform drastically better.
+New settings in mod settings menu, for more precise control how many opinions in interaction bubbles can be displayed, how often.
+Custom Nudity log preforms without any impact on performance now.
+
+-------------------
+Nudity Matters More opinions 1.0.1
+Rimworld 1.5
+
+Fixed errors, when pawn has left map or destroyed. (added null check)
+-->

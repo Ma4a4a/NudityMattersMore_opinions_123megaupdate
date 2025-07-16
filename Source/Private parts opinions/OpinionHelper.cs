@@ -1,4 +1,5 @@
 ﻿using NudityMattersMore;
+using NudityMattersMore_opinions.CalculationHelpers;
 using RimWorld;
 using rjw; 
 using rjw.Modules.Shared;
@@ -340,79 +341,7 @@ namespace NudityMattersMore_opinions
                 return rememberedOpinionData;
             }
 
-            int opinionOfObserved = observer.relations.OpinionOf(observed);
-            OpinionCategory category = OpinionCategory.Neutral;
-
-            if (IsPawnAttractedBySexualityAndGender(observer, observed))
-            {
-                category = OpinionCategory.Positive;
-                float beautyValue = observed.GetStatValue(StatDefOf.Beauty);
-
-                if (beautyValue >= 1.0f)
-                {
-                    if (beautyValue >= 2.0f)
-                    {
-                        if (random.NextDouble() < 0.7)
-                            category = OpinionCategory.Positive;
-                        else
-                            category = OpinionCategory.Neutral;
-                    }
-                    else
-                    {
-                        if (random.NextDouble() < 0.5)
-                            category = OpinionCategory.Positive;
-                        else
-                            category = OpinionCategory.Neutral;
-                    }
-                }
-                else if (beautyValue <= -1.0f)
-                {
-                    category = OpinionCategory.Negative;
-                }
-            }
-            else
-            {
-                if (opinionOfObserved < 0) category = OpinionCategory.Negative;
-                else if (opinionOfObserved > 0) category = OpinionCategory.Neutral;
-            }
-
-            if (ModLister.HasActiveModWithName("Privacy, Please!") && observer.Ideo != null)
-            {
-                PreceptDef nudityPreceptDef = null;
-                //  null check for accessing GetPrecept .def
-                if (observer.Ideo.GetPrecept(Exhibitionism_Acceptable) != null)
-                {
-                    nudityPreceptDef = observer.Ideo.GetPrecept(Exhibitionism_Acceptable).def;
-                }
-                else if (observer.Ideo.GetPrecept(Exhibitionism_Approved) != null)
-                {
-                    nudityPreceptDef = observer.Ideo.GetPrecept(Exhibitionism_Approved).def;
-                }
-                else
-                {
-                    nudityPreceptDef = DefDatabase<PreceptDef>.GetNamedSilentFail("Exhibitionism_Disapproved");
-                }
-
-
-                if (nudityPreceptDef != null)
-                {
-                    if (nudityPreceptDef == Exhibitionism_Acceptable)
-                    {
-                        category = OpinionCategory.Positive;
-                    }
-                    else if (nudityPreceptDef == Exhibitionism_Approved)
-                    {
-                        if (category != OpinionCategory.Negative)
-                        {
-                            category = OpinionCategory.Neutral;
-                        }
-                    }
-                    else if (nudityPreceptDef == Exhibitionism_Disapproved)
-                    {
-                        category = OpinionCategory.Negative;
-                    }
-                }
-            }
+            OpinionCategory category = OpinionCategoryCalculator.GetCategory(observer, observed);
 
             string newOpinionText = GetSexPartOpinion(part, category, currentSeverity, targetGenitalFamily, observer, observed);
 

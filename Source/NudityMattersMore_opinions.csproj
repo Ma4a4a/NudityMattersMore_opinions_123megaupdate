@@ -107,6 +107,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculationHelpers\CheckForTraits.cs" />
+    <Compile Include="CalculationHelpers\OpinionCategoryCalculator.cs" />
     <Compile Include="ModLog.cs" />
     <Compile Include="Private parts opinions\IsBaseOpinionExtension.cs" />
     <Compile Include="Social log notification\NMMApi_SpeakUpPatch.cs" />

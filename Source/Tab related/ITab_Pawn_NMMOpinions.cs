@@ -28,8 +28,11 @@ namespace NudityMattersMore_opinions
         // Total width calculations: NMM + Gap + Line + Opinions
         private const float OurTotalWidth = OurContentBaseWidth + HorizontalSectionGap + VerticalLineThickness + OpinionsAreaWidth;
 
-        // Variable to hold the pawn currently being observed for opinions
-        private Pawn _selectedTargetPawn = null; // Renamed for clarity: this is the pawn whose body we are observing
+        // --- ИСПРАВЛЕНИЕ #1: Логика сброса состояния ---
+        // Переменная для хранения пешки, для которой вкладка была открыта в последний раз.
+        private Pawn _lastPawnForTab = null;
+        // Переменная для хранения пешки, которую мы наблюдаем (цель). НЕ ДЕЛАЙТЕ ЕЕ STATIC.
+        private Pawn _selectedTargetPawn = null;
 
         // Enum for pawn filtering types
         private enum PawnFilterType { MapColonists, GlobalColonists, AllRegistered }
@@ -127,7 +130,7 @@ namespace NudityMattersMore_opinions
         // Override FillTab to draw all content.
         protected override void FillTab()
         {
-            Pawn pawnTab = null; // This is the pawn whose tab is currently open (our "main" pawn)
+            Pawn pawnTab; // Это пешка, чья вкладка сейчас открыта
             try
             {
                 pawnTab = this.SelPawnForOpinions;
@@ -136,27 +139,29 @@ namespace NudityMattersMore_opinions
             {
                 return;
             }
-            catch (Exception ex)
+
+            if (pawnTab == null) return;
+
+            // --- ИСПРАВЛЕНИЕ #1: Логика сброса состояния ---
+            // Если мы открыли вкладку для новой пешки (или загрузили сохранение),
+            // то сбрасываем выбранную цель на текущую пешку.
+            if (_lastPawnForTab != pawnTab)
             {
-                Log.Error($"[NMM Opinions] Unexpected error getting pawnTab for FillTab: {ex.Message}");
-                return;
+                _lastPawnForTab = pawnTab;
+                _selectedTargetPawn = pawnTab; // Сбрасываем выбор на саму пешку
+                _opinionLogScrollPosition = Vector2.zero; // Также сбрасываем позицию скролла
             }
 
-            if (pawnTab == null)
-            {
-                return;
-            }
-
-            // Initialize _selectedTargetPawn if it is not already set.
+            // Запасная инициализация, если цель по какой-то причине null
             if (_selectedTargetPawn == null)
             {
                 _selectedTargetPawn = pawnTab;
             }
 
-            Pawn observerPawn = null;
-            Pawn observedPawn = null;
+            Pawn observerPawn;
+            Pawn observedPawn;
 
-            bool isObserverMode = ITabUitility.ObserverMenu(); // Use the method from NMM to determine the mode
+            bool isObserverMode = ITabUitility.ObserverMenu();
 
             if (isObserverMode)
             {
@@ -200,10 +205,8 @@ namespace NudityMattersMore_opinions
             Rect originalContentArea = new Rect(0f, 0f, OurContentBaseWidth, OurTotalHeight);
             ITabUitility.DrawNMMCard(originalContentArea, pawnTab);
 
-            // --- Vertical Line 1 (after NMM Content) ---
             Widgets.DrawLineVertical(originalContentArea.xMax + (HorizontalSectionGap / 2) - (VerticalLineThickness / 2), 0, OurTotalHeight);
 
-            // --- Draw Our Custom Content Area (Opinions - Expanded) ---
             Rect opinionsContentArea = new Rect(originalContentArea.xMax + HorizontalSectionGap, 0f, OpinionsAreaWidth, OurTotalHeight);
             Widgets.BeginGroup(opinionsContentArea);
             Listing_Standard customListing = new Listing_Standard();
@@ -440,8 +443,8 @@ namespace NudityMattersMore_opinions
 
             if (_showOpinionLog)
             {
-                // If our log is active, draw it over the NMM log
-                DrawOpinionLog(ourLogRect, pawnTab, observerPawn, observedPawn, isObserverMode);
+                // ИСПРАВЛЕНИЕ: Вызываем метод с правильным количеством аргументов (3)
+                DrawOpinionLog(ourLogRect, pawnTab, isObserverMode);
             }
             // else: NMM log will be drawn as usual in DrawNMMCard
             // Widgets.EndGroup() for opinionsContentArea was already called above.
@@ -494,46 +497,35 @@ namespace NudityMattersMore_opinions
         }
 
         // ADDED: Method to render our own opinion log
-        private void DrawOpinionLog(Rect rect, Pawn pawnTab, Pawn observerPawn, Pawn observedPawn, bool isObserverMode)
+        private void DrawOpinionLog(Rect rect, Pawn pawnTab, bool isObserverMode)
         {
-            // Draw an opaque rectangle instead of a frame
-            GUI.color = new Color(0.1f, 0.1f, 0.1f, 0.9f); // Dark gray color with a little transparency
-            GUI.DrawTexture(rect, Texture2D.whiteTexture); // Use GUI.DrawTexture to fill with color
-            GUI.color = Color.white; // Reset the color back to white
+            GUI.color = new Color(0.1f, 0.1f, 0.1f, 0.9f);
+            GUI.DrawTexture(rect, Texture2D.whiteTexture);
+            GUI.color = Color.white;
 
             Text.Anchor = TextAnchor.UpperLeft;
-            Text.Font = GameFont.Tiny; // Reduce the font for the log
+            Text.Font = GameFont.Tiny;
 
-            Rect contentRect = new Rect(0, 0, rect.width - 16f, 9999f); // Increase the height for scrolling
-
-            Pawn pawnWhoseLogWeShow = pawnTab; // By default, log the currently selected pawn
+            // Определяем, чей лог показывать
+            Pawn pawnWhoseLogWeShow = pawnTab;
             List<OpinionLogEntry> entriesToShow = new List<OpinionLogEntry>();
+            PawnSituationalOpinionMemory memory = SituationalOpinionHelper.GetOrCreatePawnSituationalOpinionMemory(pawnWhoseLogWeShow);
 
-            if (pawnTab == _selectedTargetPawn) // Self observation
+            if (pawnTab == _selectedTargetPawn) // Наблюдение за собой
             {
-                // Show PawnTab's log as "Observed" (her thoughts about being seen)
-                PawnSituationalOpinionMemory memory = SituationalOpinionHelper.GetOrCreatePawnSituationalOpinionMemory(pawnWhoseLogWeShow);
                 entriesToShow = memory.GetRecentLogEntries().Where(e => !e.IsObserverPerspective || e.IsSelfOpinion).ToList();
-                //ModLog.Message($"[NMM Opinions] Self-observation mode: Showing {entriesToShow.Count} entries for {pawnWhoseLogWeShow.LabelShort}");
             }
-            else // Watching another pawn
+            else // Наблюдение за другим
             {
-                if (isObserverMode) // PawnTab watches SelectedTargetPawn
+                if (isObserverMode) // pawnTab наблюдает за _selectedTargetPawn
                 {
-                    pawnWhoseLogWeShow = pawnTab;
-                    PawnSituationalOpinionMemory memory = SituationalOpinionHelper.GetOrCreatePawnSituationalOpinionMemory(pawnWhoseLogWeShow);
                     entriesToShow = memory.GetRecentLogEntries().Where(e => e.IsObserverPerspective && e.ObservedPawn == _selectedTargetPawn).ToList();
-                    //ModLog.Message($"[NMM Opinions] Observer mode: Showing {entriesToShow.Count} entries for {pawnWhoseLogWeShow.LabelShort} observing {_selectedTargetPawn.LabelShort}");
                 }
-                else // SelectedTargetPawn is watching PawnTab (i.e. PawnTab is watched by SelectedTargetPawn)
+                else // _selectedTargetPawn наблюдает за pawnTab
                 {
-                    pawnWhoseLogWeShow = pawnTab; // Log is still for pawnTab
-                    PawnSituationalOpinionMemory memory = SituationalOpinionHelper.GetOrCreatePawnSituationalOpinionMemory(pawnWhoseLogWeShow);
                     entriesToShow = memory.GetRecentLogEntries().Where(e => !e.IsObserverPerspective && e.ObserverPawn == _selectedTargetPawn).ToList();
-                    //ModLog.Message($"[NMM Opinions] Observed mode: Showing {entriesToShow.Count} entries for {pawnWhoseLogWeShow.LabelShort} being observed by {_selectedTargetPawn.LabelShort}");
                 }
             }
-
 
             if (!entriesToShow.Any())
             {
@@ -541,25 +533,50 @@ namespace NudityMattersMore_opinions
                 Text.Anchor = TextAnchor.MiddleCenter;
                 Widgets.Label(noEntriesRect, "No situational opinions recorded yet.");
                 Text.Anchor = TextAnchor.UpperLeft;
+                Text.Font = GameFont.Small;
                 return;
             }
 
-            // Start ScrollView
+            // --- Начало исправления скролл-бара ---
+
+            // 1. Динамически вычисляем высоту всего контента
+            float totalContentHeight = 0f;
+            float viewWidth = rect.width - 16f; // Ширина видимой области скролла
+            foreach (var entry in entriesToShow)
+            {
+                // Добавляем высоту текста
+                totalContentHeight += Text.CalcHeight(entry.GetFormattedLogString(), viewWidth);
+                // Добавляем высоту отступа
+                totalContentHeight += 4f; // Увеличили отступ для лучшей читаемости
+            }
+
+            // Если контента меньше, чем высота окна, делаем высоту равной окну, чтобы избежать пустого места
+            if (totalContentHeight < rect.height)
+            {
+                totalContentHeight = rect.height;
+            }
+
+            // 2. Используем вычисленную высоту в Rect для контента
+            Rect contentRect = new Rect(0, 0, viewWidth, totalContentHeight);
+
+            // --- Конец исправления скролл-бара ---
+
             Widgets.BeginScrollView(rect, ref _opinionLogScrollPosition, contentRect);
 
             Listing_Standard logListing = new Listing_Standard();
+            // Используем тот же Rect, что и для ScrollView, но с началом в (0,0)
             logListing.Begin(new Rect(0, 0, contentRect.width, contentRect.height));
 
             foreach (var entry in entriesToShow)
             {
-                logListing.Label(entry.GetFormattedLogString(), -1f, entry.OpinionText); // Use OpinionText as a tooltip
-                logListing.Gap(2f); // Small indent between entries
+                logListing.Label(entry.GetFormattedLogString(), -1f, entry.OpinionText);
+                logListing.Gap(4f); // Увеличенный отступ
             }
 
             logListing.End();
             Widgets.EndScrollView();
 
-            Text.Font = GameFont.Small; // Return the normal font
+            Text.Font = GameFont.Small;
         }
     }
 }
