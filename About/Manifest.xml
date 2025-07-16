@@ -23,7 +23,7 @@ Total refactoring, centralized opinion filter for private parts and situations. 
 
 Improvement:
 Reworked opinion selection (positive, neutral, negative).
-Now there is complex calculations for opinoin mood, like gender, atractivness, social relations,
+Now there is complex calculations for opinion mood, like gender, attractiveness, social relations,
 traits, ideology percepts, age, etc. (still need balancing, for more real feel)
 
 
