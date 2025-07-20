@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
 	<identifier>Nudity Matters More opinions</identifier>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<dependencies/>
 	<incompatibleWith/>
 	<loadAfter/>
@@ -12,6 +12,13 @@
 
 
 <!-- Version History:
+
+Nudity Matters More opinions 1.0.4
+Rimworld 1.5
+
+Fixes:
+Fixed incorrect token in interaction bubbles opinion.
+
 
 Nudity Matters More opinions 1.0.3
 Rimworld 1.5

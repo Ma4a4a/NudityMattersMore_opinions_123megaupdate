@@ -607,12 +607,12 @@
     <logRulesInitiator>
 
       <rulesStrings>
-        <li>r_logentry->In the middle of [sex], there was a look of [emotion].</li>
-        <li>r_logentry->The act of [sex] and a shared glance of [emotion].</li>
-        <li>r_logentry->Just [sex]... and a face filled with [emotion].</li>
-        <li>r_logentry->Focused on [sex], the atmosphere thick with [emotion].</li>
-        <li>r_logentry->A moment of [sex], an [emotion] expression.</li>
-        <li>r_logentry->The rhythm of [sex] was accompanied by an [emotion] stare.</li>
+        <li>r_logentry->In the middle of [rape], there was a look of [emotion].</li>
+        <li>r_logentry->The act of [rape] and a shared glance of [emotion].</li>
+        <li>r_logentry->Just [rape]... and a face filled with [emotion].</li>
+        <li>r_logentry->Focused on [rape], the atmosphere thick with [emotion].</li>
+        <li>r_logentry->A moment of [rape], an [emotion] expression.</li>
+        <li>r_logentry->The rhythm of [rape] was accompanied by an [emotion] stare.</li>
 		<li>saw->saw, that</li>
         <li>saw->noticed that</li>
         <li>saw->caught</li>
