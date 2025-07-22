@@ -76,13 +76,13 @@ namespace NudityMattersMore_opinions_patches
 
             // Get the cover state
             Hediff coverHediff = observed.health.hediffSet.GetFirstHediffOfDef(HediffDef.Named("CoverBody"));
-            if (coverHediff == null)
-            {
+            //if (coverHediff == null)
+            //{
                 // If there is no CoverBody header, it may not have been checked yet.
                 // Call CoverCheck so NMM can set it.
-                CoverBody.CoverCheck(observed);
-                coverHediff = observed.health.hediffSet.GetFirstHediffOfDef(HediffDef.Named("CoverBody"));
-            }
+               // CoverBody.CoverCheck(observed);
+               // coverHediff = observed.health.hediffSet.GetFirstHediffOfDef(HediffDef.Named("CoverBody"));
+            //}
 
             bool covering = InfoHelper.IsCovering(observed, out coverHediff);
 

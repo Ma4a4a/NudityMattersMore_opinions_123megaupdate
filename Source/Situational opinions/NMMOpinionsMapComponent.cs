@@ -3,7 +3,7 @@ using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using NudityMattersMore; // For NMM.PawnInteractionManager, NMM.PawnInteraction, NMM.PawnState, NMM.InteractionType
-using System; 
+using System;
 
 namespace NudityMattersMore_opinions
 {
@@ -102,6 +102,20 @@ namespace NudityMattersMore_opinions
                 PawnInteraction interaction = interactions[i];
 
                 if (interaction == null || interaction.Pawn == null) continue;
+
+                // =================================================================================
+                // ИСПРАВЛЕНИЕ: Добавлена проверка для предотвращения ошибок с состоянием 'None'.
+                // Логи ошибок показывают, что взаимодействия с PawnState 'None'
+                // (например, "..._Sex_None", "..._Masturbation_None") вызывают ошибку "Value cannot be null".
+                // Скорее всего, это происходит потому, что в SituationalOpinionHelper нет определенного
+                // мнения для этого нейтрального/стандартного состояния.
+                // Пропуская эти взаимодействия, мы избегаем вызова вспомогательного метода с проблемными данными
+                // и предотвращаем возникновение ошибки.
+                if (interaction.PawnState.ToString() == "None")
+                {
+                    continue;
+                }
+                // =================================================================================
 
                 Pawn otherPawn = interaction.Pawn; // "Another" pawn in the interaction
 

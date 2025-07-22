@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
 	<identifier>Nudity Matters More opinions</identifier>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<dependencies/>
 	<incompatibleWith/>
 	<loadAfter/>
@@ -12,6 +12,16 @@
 
 
 <!-- Version History:
+
+Nudity Matters More opinions 1.0.5
+Rimworld 1.5
+
+Fixes:
+Fixed Value cannot be null. Parameter name: key
+Fixed missing method exception covering body
+
+
+
 
 Nudity Matters More opinions 1.0.4
 Rimworld 1.5
@@ -35,7 +45,7 @@ traits, ideology percepts, age, etc. (still need balancing, for more real feel)
 
 
 
--------------------
+
 Nudity Matters More opinions 1.0.2
 Rimworld 1.5
 
@@ -45,7 +55,7 @@ Opinions in bubbles now must perform drastically better.
 New settings in mod settings menu, for more precise control how many opinions in interaction bubbles can be displayed, how often.
 Custom Nudity log preforms without any impact on performance now.
 
--------------------
+
 Nudity Matters More opinions 1.0.1
 Rimworld 1.5
 
