@@ -33,6 +33,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -54,6 +55,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -75,6 +77,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -134,6 +137,7 @@
     <workerClass>InteractionWorker</workerClass>
     <symbol>UI/Interactions/Rape</symbol>
     <logRulesInitiator>
+	
       <rulesStrings>
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
@@ -346,6 +350,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -598,6 +603,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -704,6 +710,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>
@@ -724,6 +731,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>
@@ -743,6 +751,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>
@@ -802,6 +811,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
       <rulesStrings>
         <li>r_logentry->[INITIATOR_nameDef] saw [RECIPIENT_nameDef] raping someone.</li>
@@ -821,6 +831,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
       <rulesStrings>
         <li>r_logentry->[INITIATOR_nameDef] saw [RECIPIENT_nameDef] was raped by someone.</li>
@@ -991,6 +1002,7 @@
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>
     </logRulesInitiator>
+	
 	<logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>
@@ -1215,6 +1227,7 @@
     <workerClass>InteractionWorker</workerClass>
     <symbol>UI/Interactions/Surgery</symbol>
     <logRulesInitiator>
+	
       <rulesStrings>
         <li>r_logentry->[NMM_DYNAMIC_OPINION_TEXT]</li>
       </rulesStrings>

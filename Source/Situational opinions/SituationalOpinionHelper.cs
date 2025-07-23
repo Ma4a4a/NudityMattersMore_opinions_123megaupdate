@@ -90,6 +90,34 @@ namespace NudityMattersMore_opinions
                 pawnSituationalOpinionMemories.Remove(pawn);
             }
         }
+        /// <summary>
+        /// NEW: Determines the correct pawn state directly, making the logic more robust.
+        /// НОВОЕ: Напрямую определяет состояние пешки (спит, без сознания), делая логику более надежной.
+        /// </summary>
+        private static PawnState GetCorrectedPawnState(Pawn pawn, PawnState originalState)
+        {
+            if (pawn == null || !pawn.Spawned) return originalState;
+
+            // A pawn that is Downed is considered Unconscious for our purposes.
+            // Пешка в состоянии Downed считается Unconscious для наших целей.
+            if (pawn.Downed)
+            {
+                // NOTE: Assumes 'Unconscious' exists in the NudityMattersMore.PawnState enum.
+                // ПРИМЕЧАНИЕ: Предполагается, что 'Unconscious' существует в перечислении NudityMattersMore.PawnState.
+                return (PawnState)Enum.Parse(typeof(PawnState), "Unconscious");
+            }
+
+            // A pawn in a bed with an 'asleep' job driver is sleeping.
+            // Пешка в кровати с заданием 'asleep' - спит.
+            if (pawn.jobs?.curDriver?.asleep ?? false)
+            {
+                // NOTE: Assumes 'Asleep' exists in the NudityMattersMore.PawnState enum.
+                // ПРИМЕЧАНИЕ: Предполагается, что 'Asleep' существует в перечислении NudityMattersMore.PawnState.
+                return (PawnState)Enum.Parse(typeof(PawnState), "Asleep");
+            }
+
+            return originalState;
+        }
 
         /// <summary>
         /// Generates and adds a situational opinion to the log of the corresponding pawn.
@@ -253,6 +281,8 @@ namespace NudityMattersMore_opinions
             // Предварительно вычисляем состояние одежды наблюдателя (если нужно)
             DressState currentObserverDressState = GetPawnDressState(actualObserver);
 
+            PawnState currentPawnState = GetCorrectedPawnState(actualObserved, pawnState);
+
             // Предварительно вычисляем, есть ли у наблюдаемой пешки грудь
             bool observedHasBreasts = NudityMattersMore.InfoHelper.HasBreasts(actualObserved);
 
@@ -309,8 +339,7 @@ namespace NudityMattersMore_opinions
                 // Check InteractionType and PawnState conditions (strict filters)
                 if (ext.requiredInteractionType != InteractionType.None && ext.requiredInteractionType != interactionType)
                 { continue; }
-                if (ext.requiredPawnState != PawnState.None && ext.requiredPawnState != pawnState)
-                { continue; }
+                if (ext.requiredPawnState != PawnState.None && ext.requiredPawnState != currentPawnState) continue;
 
                 // Conditions associated with awareness
                 if (ext.requiredObservedAware.HasValue && ext.requiredObservedAware.Value != aware) { continue; }
@@ -453,9 +482,9 @@ namespace NudityMattersMore_opinions
 
 
                 // Add weight for matching PawnState
-                if (ext.requiredPawnState == pawnState && pawnState != PawnState.None)
+                if (ext.requiredPawnState == currentPawnState && currentPawnState != PawnState.None)
                 {
-                    currentWeight += 50;
+                    currentWeight += 1000;
                 }
 
 
@@ -696,6 +725,8 @@ namespace NudityMattersMore_opinions
             // Предварительно вычисляем состояние одежды наблюдателя (если нужно)
             DressState currentObserverDressState = GetPawnDressState(actualObserver);
 
+            PawnState currentPawnState = GetCorrectedPawnState(actualObserved, nmmPawnState);
+
             // Предварительно вычисляем, есть ли у наблюдаемой пешки грудь
             bool observedHasBreasts = NudityMattersMore.InfoHelper.HasBreasts(actualObserved);
 
@@ -747,8 +778,7 @@ namespace NudityMattersMore_opinions
                 // Check InteractionType and PawnState conditions
                 if (ext.requiredInteractionType != InteractionType.None && ext.requiredInteractionType != nmmInteractionType)
                 { continue; }
-                if (ext.requiredPawnState != PawnState.None && ext.requiredPawnState != nmmPawnState)
-                { continue; }
+                if (ext.requiredPawnState != PawnState.None && ext.requiredPawnState != currentPawnState) continue;
 
                 // Conditions associated with awareness
                 if (ext.requiredObservedAware.HasValue && ext.requiredObservedAware.Value != aware) { continue; }
@@ -876,7 +906,7 @@ namespace NudityMattersMore_opinions
                 // Add weight for matching PawnState
                 if (ext.requiredPawnState == nmmPawnState && nmmPawnState != PawnState.None)
                 {
-                    currentWeight += 50;
+                    currentWeight += 1000;
                 }
 
                 // Add weight for compliance with awareness

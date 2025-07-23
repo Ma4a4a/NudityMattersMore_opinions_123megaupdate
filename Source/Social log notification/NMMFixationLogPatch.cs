@@ -5,6 +5,7 @@ using NudityMattersMore;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using UnityEngine;
 
 namespace NudityMattersMore_opinions
 {
@@ -50,16 +51,11 @@ namespace NudityMattersMore_opinions
     {
         private static readonly bool IsEnabled;
 
-        // Кулдаун для конкретного взаимодействия (инициатор, цель, тип)
         private static Dictionary<Tuple<Pawn, Pawn, InteractionType>, int> interactionCooldownExpiry = new Dictionary<Tuple<Pawn, Pawn, InteractionType>, int>();
-
-        // Счетчик мнений, высказанных пешкой за один "проход" для ограничения спама
         private static Dictionary<Pawn, int> opinionsThisTick = new Dictionary<Pawn, int>();
         private static int lastTickProcessed = -1;
-
         private const int QueueProcessInterval = 60;
         private static Queue<Action> commentaryQueue = new Queue<Action>();
-
         public static DynamicLogTextInfo LastDynamicTextInfo = null;
 
         static NMMFixationLogPatches()
@@ -72,32 +68,54 @@ namespace NudityMattersMore_opinions
 
             IsEnabled = true;
             var harmony = new Harmony("shark510.nuditymattersmoreopinions.nmmo.fixationlog");
-            harmony.Patch(AccessTools.Method(typeof(PawnInteractionManager), "ProcessInteraction"), postfix: new HarmonyMethod(typeof(NMMFixationLogPatches), nameof(ProcessInteraction_Postfix)));
+
+            var originalMethod = AccessTools.Method(typeof(PawnInteractionManager), "ProcessInteraction", new Type[] { typeof(Pawn), typeof(Pawn), typeof(InteractionType), typeof(PawnState), typeof(bool), typeof(bool), typeof(bool), typeof(bool), typeof(bool) });
+            if (originalMethod != null)
+            {
+                harmony.Patch(originalMethod, postfix: new HarmonyMethod(typeof(NMMFixationLogPatches), nameof(ProcessInteraction_Postfix)));
+            }
+            else
+            {
+                Log.Error("[NMM Opinions] Could not find PawnInteractionManager.ProcessInteraction to patch. Social logs will not work.");
+            }
+
             harmony.Patch(AccessTools.Method(typeof(TickManager), "DoSingleTick"), postfix: new HarmonyMethod(typeof(NMMFixationLogPatches), nameof(ProcessQueue_Postfix)));
+        }
+
+        private static PawnState GetCorrectedPawnState(Pawn pawn)
+        {
+            if (pawn == null || pawn.Dead) return PawnState.None;
+            if (pawn.Downed) return PawnState.Unconscious;
+            if (pawn.jobs?.curDriver?.asleep ?? false) return PawnState.Asleep;
+            return PawnState.None;
         }
 
         public static void ProcessQueue_Postfix()
         {
             if (!IsEnabled) return;
-
             int currentTick = Find.TickManager.TicksGame;
-
-            // Очищаем счетчик одновременных мнений в начале каждого нового цикла обработки
             if (currentTick > lastTickProcessed)
             {
                 opinionsThisTick.Clear();
                 lastTickProcessed = currentTick;
             }
-
             if (currentTick % QueueProcessInterval == 0 && commentaryQueue.Any())
             {
                 commentaryQueue.Dequeue().Invoke();
             }
         }
 
-        public static void ProcessInteraction_Postfix(Pawn observer, Pawn observed, InteractionType interactionType, bool aware)
+        public static void ProcessInteraction_Postfix(Pawn observer, Pawn observed, InteractionType interactionType, PawnState state, bool aware, bool shower, bool bath, bool breasts, bool prude)
         {
             if (!IsEnabled || !NudityMattersMore_opinions_Mod.settings.enableFixationLogComments || observer == null || observed == null || observer == observed)
+            {
+                return;
+            }
+
+            // ==================================================================
+            // ИСПРАВЛЕНИЕ: Проверяем, находятся ли пешки на карте. Если нет - выходим.
+            // ==================================================================
+            if (!observer.Spawned || !observed.Spawned)
             {
                 return;
             }
@@ -107,17 +125,21 @@ namespace NudityMattersMore_opinions
                 return;
             }
 
+            PawnState finalState = state;
+            if (finalState == PawnState.None)
+            {
+                finalState = GetCorrectedPawnState(observed);
+            }
+
             // --- ОБРАБОТКА ДЛЯ НАБЛЮДАТЕЛЯ (Observer) ---
             bool observerInSameNudeState = IsPawnInSameNudeState(observer, interactionType);
-
-            // Новая проверка: если настройка выключена и оба в одинаковом состоянии, не комментируем
             if (!NudityMattersMore_opinions_Mod.settings.allowCommentOnSameState && observerInSameNudeState && IsPawnInSameNudeState(observed, interactionType))
             {
-                // Пропускаем, если оба в одинаковом состоянии и это запрещено настройками
+                // Пропуск
             }
             else if (!observerInSameNudeState)
             {
-                string rawTextObserver = SituationalOpinionHelper.SelectOpinionTextForBubble(observer, observed, interactionType, PawnState.None, aware, false, OpinionPerspective.UsedForObserver);
+                string rawTextObserver = SituationalOpinionHelper.SelectOpinionTextForBubble(observer, observed, interactionType, finalState, aware, false, OpinionPerspective.UsedForObserver);
                 InteractionDef defObserver = null;
                 if (!string.IsNullOrEmpty(rawTextObserver))
                 {
@@ -137,7 +159,7 @@ namespace NudityMattersMore_opinions
             // --- ОБРАБОТКА ДЛЯ НАБЛЮДАЕМОГО (Observed) ---
             if (aware)
             {
-                string rawTextObserved = SituationalOpinionHelper.SelectOpinionTextForBubble(observed, observer, interactionType, PawnState.None, aware, false, OpinionPerspective.UsedForObserved);
+                string rawTextObserved = SituationalOpinionHelper.SelectOpinionTextForBubble(observed, observer, interactionType, finalState, aware, false, OpinionPerspective.UsedForObserved);
                 InteractionDef defObserved = null;
                 if (!string.IsNullOrEmpty(rawTextObserved))
                 {
@@ -158,50 +180,52 @@ namespace NudityMattersMore_opinions
         private static void TryQueueCommentary(Pawn initiator, Pawn recipient, InteractionType interactionType, InteractionDef interactionDef, string rawOpinionText, Pawn originalObserver, Pawn originalObserved)
         {
             int currentTick = Find.TickManager.TicksGame;
-
-            // Проверка на лимит одновременных мнений
             if (opinionsThisTick.TryGetValue(initiator, out int count) && count >= NudityMattersMore_opinions_Mod.settings.maxSimultaneousOpinions)
             {
                 return;
             }
-
-            // Проверка кулдауна для конкретного взаимодействия
             var key = Tuple.Create(initiator, recipient, interactionType);
             if (interactionCooldownExpiry.TryGetValue(key, out int expiryTick) && currentTick < expiryTick)
             {
                 return;
             }
-
             if (initiator == null || recipient == null)
             {
                 return;
             }
-            // ИСПРАВЛЕНО: Передаем interactionType в очередь
             commentaryQueue.Enqueue(() => FireSingleCommentary(initiator, recipient, interactionType, interactionDef, rawOpinionText, originalObserver, originalObserved));
         }
-        // ИСПРАВЛЕНО: Добавлен параметр interactionType
+
+        // ==================================================================
+        // ПОЛНОСТЬЮ ПЕРЕПИСАННЫЙ МЕТОД
+        // ==================================================================
         private static void FireSingleCommentary(Pawn initiator, Pawn recipient, InteractionType interactionType, InteractionDef interactionDef, string rawOpinionText, Pawn originalObserver, Pawn originalObserved)
         {
-            if (initiator == null || recipient == null || interactionDef == null)
+            // --- Начальные проверки ---
+            if (initiator == null || recipient == null || interactionDef == null || !initiator.Spawned)
             {
                 return;
             }
 
-            // Повторная проверка кулдаунов
+            // Инициатор не может говорить, если он сам без сознания или спит
+            if (initiator.Dead || initiator.Downed || (initiator.jobs?.curDriver?.asleep ?? false))
+            {
+                return;
+            }
+
+            // --- Проверки на кулдаун и лимит ---
             int currentTick = Find.TickManager.TicksGame;
-            // ИСПРАВЛЕНО: Используем переданный interactionType для создания ключа
             var key = Tuple.Create(initiator, recipient, interactionType);
             if (interactionCooldownExpiry.TryGetValue(key, out int expiryTick) && currentTick < expiryTick)
             {
                 return;
             }
-
-            // Повторная проверка лимита одновременных мнений
             if (opinionsThisTick.TryGetValue(initiator, out int count) && count >= NudityMattersMore_opinions_Mod.settings.maxSimultaneousOpinions)
             {
                 return;
             }
 
+            // --- Подготовка динамического текста ---
             DynamicLogTextInfo dynamicTextInfo = null;
             if (!string.IsNullOrEmpty(rawOpinionText))
             {
@@ -214,19 +238,42 @@ namespace NudityMattersMore_opinions
                 };
             }
 
+            // Передаем информацию о тексте через статическое поле в патч для PlayLog.Add
             LastDynamicTextInfo = dynamicTextInfo;
 
             try
             {
-                if (initiator.interactions.TryInteractWith(recipient, interactionDef))
-                {
-                    currentTick = Find.TickManager.TicksGame;
+                bool interactionSucceeded = false;
 
-                    // Обновляем кулдаун для этого конкретного взаимодействия
+                // --- НОВАЯ ЛОГИКА: Проверяем состояние цели (recipient) ---
+                bool recipientIsInactive = recipient.Downed || (recipient.jobs?.curDriver?.asleep ?? false);
+
+                if (recipientIsInactive)
+                {
+                    // --- ОБХОД ДЛЯ НЕАКТИВНЫХ ПЕШЕК ---
+                    // Если цель без сознания или спит, TryInteractWith вернет false.
+                    // Мы обходим это, создавая запись в логе напрямую.
+                    // SpeakUp читает PlayLog для создания пузырьков, так что этого достаточно.
+                    PlayLogEntry_Interaction entry = new PlayLogEntry_Interaction(interactionDef, initiator, recipient, null);
+                    Find.PlayLog.Add(entry);
+                    interactionSucceeded = true; // Считаем это успехом, чтобы запустить кулдаун.
+                }
+                else
+                {
+                    // --- СТАНДАРТНЫЙ МЕТОД ДЛЯ АКТИВНЫХ ПЕШЕК ---
+                    // Если цель активна, используем стандартный метод для лучшей совместимости с другими модами.
+                    if (initiator.interactions.TryInteractWith(recipient, interactionDef))
+                    {
+                        interactionSucceeded = true;
+                    }
+                }
+
+                if (interactionSucceeded)
+                {
+                    // Устанавливаем кулдаун и увеличиваем счетчик мнений за этот тик
+                    currentTick = Find.TickManager.TicksGame;
                     int cooldownTicks = (int)(NudityMattersMore_opinions_Mod.settings.commentaryCooldownSeconds * 60);
                     interactionCooldownExpiry[key] = currentTick + cooldownTicks;
-
-                    // Увеличиваем счетчик мнений за этот тик
                     if (opinionsThisTick.ContainsKey(initiator))
                     {
                         opinionsThisTick[initiator]++;
@@ -239,6 +286,8 @@ namespace NudityMattersMore_opinions
             }
             finally
             {
+                // Этот блок 'finally' гарантирует, что LastDynamicTextInfo всегда будет очищен,
+                // предотвращая "утечку" текста в следующую, не связанную с этим запись в логе.
                 LastDynamicTextInfo = null;
             }
         }

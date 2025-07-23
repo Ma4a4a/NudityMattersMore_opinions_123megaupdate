@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Unconscious_Topless_Unisex_PositiveDef">
+		<defName>iWasSeen_Unconscious_Topless_Unisex_Positive</defName>
+        <label>iWasSeen_Unconscious_Topless_Unisex_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Topless</requiredObservedDressState>
+				<requiredBodyPartSeen>Chest</requiredBodyPartSeen>
+				<requiredPawnState>Unconscious</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I woke up with my chest bare, and a strange thrill ran through me. It's exciting to think someone saw me so exposed.</li>
+			<li>My shirt was gone. The thought of my bare torso being on display while I was out is surprisingly pleasant.</li>
+			<li>There's a raw appeal to being seen this way - partially undressed and totally vulnerable.</li>
+			<li>A slow smile crosses my face. I was a topless spectacle. I hope they enjoyed the view.</li>
+			<li>The idea of eyes lingering on my bare chest, on my nipples, while I was helpless... it's a potent thought.</li>
+			<li>I feel a strange sense of freedom. My upper body was unconstrained, open to the air and any passing gaze.</li>
+			<li>Waking up topless should be alarming, but all I feel is a buzz of exhibitionistic excitement.</li>
+			<li>I was an open book, at least from the waist up. I feel a strange connection to that unseen observer.</li>
+			<li>The idea that my unconscious, half-naked body could have been an object of interest is a powerful thought.</li>
+			<li>I wonder what they saw, what they thought. The mystery of their reaction is part of the thrill.</li>
+			<li>My torso was completely at their mercy. The submission in that thought is deeply appealing.</li>
+			<li>I was a secret piece of art, displayed for a private audience. I can't help but feel a little proud of the sight I must have been.</li>
+			<li>The air on my bare skin feels electric now, charged with the memory of being seen. My nipples are tingling.</li>
+			<li>There's an intimacy in being seen so openly, even if I was unaware. It's a bond of sorts.</li>
+			<li>I was powerless and partially exposed. The combination is intoxicating.</li>
+			<li>A part of me hopes they looked closely, appreciating the form they were saving.</li>
+			<li>This experience has awakened a part of me I didn't know existed. A desire to be seen.</li>
+			<li>I feel a phantom sensation on my skin, as if from a lingering gaze. It's not an unpleasant feeling.</li>
+			<li>To be so vulnerable, and to have survived... it makes the exposure feel like a victory lap for my torso.</li>
+			<li>I was a mystery to be partially uncovered. The thought makes me grin.</li>
+		</opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Unconscious_Topless_Unisex_NeutralDef">
+		<defName>iWasSeen_Unconscious_Topless_Unisex_Neutral</defName>
+        <label>iWasSeen_Unconscious_Topless_Unisex_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Topless</requiredObservedDressState>
+				<requiredBodyPartSeen>Chest</requiredBodyPartSeen>
+				<requiredPawnState>Unconscious</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>My shirt is missing. I assume there was a valid medical reason for its removal.</li>
+			<li>My head hurts. My chest is bare. The second fact is less important than the first.</li>
+			<li>They took my shirt off. It's a practical step in assessing injuries. I'm indifferent.</li>
+			<li>My torso is uncovered. This is a temporary state that needs a practical solution: a new shirt.</li>
+			<li>A chest is just a chest. People have seen them before. It's not a significant event.</li>
+			<li>I'm aware my upper body was exposed. It doesn't register as important right now.</li>
+			<li>The fact that I'm topless is a minor detail in the current situation.</li>
+			<li>I need to find a shirt. It's a practical consideration for warmth.</li>
+			<li>I was unconscious, so I have no memory of being seen. It's hard to be emotional about something I didn't witness.</li>
+			<li>My upper body is nude. Acknowledged. Now, what is the actual problem I need to solve?</li>
+			<li>I feel a draft on my skin. I should probably find a covering.</li>
+			<li>The situation is what it is. Being topless is part of it. I accept this and move on.</li>
+			<li>I'm more concerned about why I was unconscious than the fact someone saw my chest.</li>
+			<li>It's just a body. Everyone has one. Its level of coverage is mostly arbitrary.</li>
+			<li>I'll add 'find shirt' to my mental to-do list. It's on the list.</li>
+			<li>I feel no particular emotion about this. It's just another strange occurrence.</li>
+			<li>I suppose it's better to be topless and alive than fully clothed and not.</li>
+			<li>The coolness on my skin is a physical sensation, not an emotional one.</li>
+			<li>I've seen other people topless for various reasons. It's not a shocking event in this place.</li>
+			<li>So my shirt is gone. It was probably full of holes anyway.</li>
+		</opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Unconscious_Topless_Unisex_NegativeDef">
+		<defName>iWasSeen_Unconscious_Topless_Unisex_Negative</defName>
+        <label>iWasSeen_Unconscious_Topless_Unisex_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Topless</requiredObservedDressState>
+				<requiredBodyPartSeen>Chest</requiredBodyPartSeen>
+				<requiredPawnState>Unconscious</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>My hands flew to my chest. I was exposed. My shirt was gone. The feeling of being watched while helpless makes my skin crawl.</li>
+			<li>Who did this? Who took my shirt? The thought of someone staring at my bare chest while I was unconscious is infuriating.</li>
+			<li>I feel violated. My torso was bared for anyone to see without my permission. It's a disgusting breach of my privacy.</li>
+			<li>A wave of shame and anger washes over me. To have my chest exposed like that... it's humiliating.</li>
+			<li>I feel like a piece of meat that was partially unwrapped for inspection. The thought is degrading.</li>
+			<li>My privacy was invaded. They had no right to look at me like that, regardless of the reason.</li>
+			<li>The memory of being unconscious is now spoiled by this image of my bare chest on display.</li>
+			<li>I'm shaking. The thought of their eyes on my skin, on my nipples, makes me feel dirty and used.</li>
+			<li>This wasn't about helping me. This was an opportunity for them to gawk. I feel so angry.</li>
+			<li>I feel so vulnerable and powerless. My body was treated like public property.</li>
+			<li>I can't stop thinking about it. Who saw? What did they think? The uncertainty is a form of mental torture.</li>
+			<li>This is a profound disrespect. I was a person in need of help, not an object for their curiosity.</li>
+			<li>I want to cover myself, but it's too late. The damage is done. They've already seen.</li>
+			<li>The shame is a cold knot in my stomach. They saw an intimate part of me while I was completely vulnerable.</li>
+			<li>I feel a desperate need to find who did this and make them understand the humiliation they've caused me.</li>
+			<li>My sense of safety is gone. If they can do this, what else are they capable of doing?</li>
+			<li>I feel tainted by their gaze. I wish I could scrub the feeling of their eyes off my skin.</li>
+			<li>This is a violation I won't forget. The image of my exposed torso is burned into my mind.</li>
+			<li>I feel reduced and objectified. My body is not for public consumption.</li>
+			<li>The anger is so sharp it's painful. They took advantage of my weakness to satisfy their own curiosity.</li>
+		</opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+</Defs>

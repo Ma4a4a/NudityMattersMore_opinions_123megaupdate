@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
 	<identifier>Nudity Matters More opinions</identifier>
-	<version>1.0.5</version>
+	<version>1.0.6</version>
 	<dependencies/>
 	<incompatibleWith/>
 	<loadAfter/>
@@ -12,6 +12,19 @@
 
 
 <!-- Version History:
+
+Nudity Matters More opinions 1.0.6
+Rimworld 1.5
+
+Improvement:
+Now asleep and unconscious conditions finally works (bubbles will show only observer perspective, nudity log will show all perspectives).
+Added more sleeping descriptions and new unconscious descriptions.
+
+Fixes:
+Caravan map open social log got error spawn.
+Possible fix of Error processing situational opinion, Value cannot be null.
+
+
 
 Nudity Matters More opinions 1.0.5
 Rimworld 1.5

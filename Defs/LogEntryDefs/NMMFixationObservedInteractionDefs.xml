@@ -187,6 +187,7 @@
         <li>emotion->calm</li>
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -286,6 +287,7 @@
         <li>emotion->calm</li>
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -389,6 +391,7 @@
         <li>emotion->calm</li>
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -773,6 +776,7 @@
         <li>emotion->calm</li>
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
       <rulesStrings>
         <li>r_logentry->[INITIATOR_nameDef] was [seen_by] [RECIPIENT_nameDef], while [INITIATOR_pronoun] was raped.</li>
@@ -1779,6 +1783,7 @@
         <li>emotion->calm</li>
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>
@@ -3231,6 +3236,7 @@
         <li>emotion->calm</li>
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- A was noticed by B, while A was naked -->
       <rulesStrings>

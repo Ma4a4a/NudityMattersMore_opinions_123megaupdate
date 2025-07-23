@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Bottomless_female_PositiveDef">
+		<defName>iSaw_Asleep_Bottomless_female_Positive</defName>
+        <label>iSaw_Asleep_Bottomless_female_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Vagina</requiredGenitalFamily>
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I saw {OBSERVED_nameShort} sleeping without any pants on. The view of her exposed vagina was a secret thrill.</li>
+			<li>{OBSERVED_nameShortPossessive} legs were parted just so, offering a tantalizing glimpse of her glistening folds. It was a beautiful sight.</li>
+			<li>My eyes locked onto the dark triangle between {OBSERVED_nameShortPossessive} legs. The sight of her vulva, so vulnerable in sleep, was incredibly arousing.</li>
+			<li>I caught sight of {OBSERVED_nameShortPossessive} bottomless form. The curve of her hips leading down to her exposed sex was perfect.</li>
+			<li>The air grew heavy with unspoken desire as I gazed upon {OBSERVED_nameShortPossessive} bare lower half. Her vagina looked so soft and inviting.</li>
+			<li>A vision of pure femininity. {OBSERVED_nameShortPossessive} bare buttocks and the hint of her anus were a masterpiece of nature.</li>
+			<li>I felt a jolt of excitement seeing {OBSERVED_nameShort} so exposed. Her labia were like delicate petals.</li>
+			<li>{OBSERVED_nameShort} was a sleeping goddess, her lower body a sacred altar that I was privileged to witness.</li>
+			<li>The sight of {OBSERVED_nameShortPossessive} bare crotch was a potent fantasy. I couldn't tear my eyes away.</li>
+			<li>{OBSERVED_nameShortPossessive} bottomless slumber was a gift. The intimate view of her vagina and anus was something I'll treasure.</li>
+			<li>I was mesmerized by the sheer beauty of {OBSERVED_nameShortPossessive} exposed form. Her vulva was a perfect, dark jewel.</li>
+			<li>My pulse raced as I took in the view. {OBSERVED_nameShortPossessive} bare ass and the shadowed cleft between her legs were a potent combination.</li>
+			<li>{OBSERVED_nameShort} slept on, unaware of the effect she was having on me. Her exposed lower body was a symphony of curves.</li>
+			<li>What a magnificent view. The soft mound of {OBSERVED_nameShortPossessive} venus was the center of my universe in that moment.</li>
+			<li>I felt a magnetic pull towards her. The sight of {OBSERVED_nameShortPossessive} unguarded sex was an invitation to dream.</li>
+			<li>The image of {OBSERVED_nameShortPossessive} exposed vagina is burned into my memory in the best way possible.</li>
+			<li>{OBSERVED_nameShortPossessive} bareness was a form of art. The way the light caught the moisture on her folds was breathtaking.</li>
+			<li>I felt a deep sense of appreciation for the female form as I watched her sleep, so beautifully exposed.</li>
+			<li>The sight was both intimate and exhilarating. Her bottomless state left little to the imagination, and my imagination ran wild.</li>
+			<li>A perfect, secret moment. Just me and the sight of her beautiful, bare lower body.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Bottomless_female_NeutralDef">
+		<defName>iSaw_Asleep_Bottomless_female_Neutral</defName>
+        <label>iSaw_Asleep_Bottomless_female_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Vagina</requiredGenitalFamily>
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I noticed {OBSERVED_nameShort} was sleeping without anything on her lower half. Her genitals were visible.</li>
+			<li>{OBSERVED_nameShort} was bottomless. I registered this fact and continued with my work.</li>
+			<li>My gaze passed over {OBSERVED_nameShort}, and I noted her lack of pants. I didn't give it much thought.</li>
+			<li>I saw {OBSERVED_nameShortPossessive} vagina while she was sleeping. It was a neutral anatomical observation.</li>
+			<li>The subject, {OBSERVED_nameShort}, was observed sleeping without lower body clothing. Vagina and anus were exposed.</li>
+			<li>It appears {OBSERVED_nameShort} prefers to sleep bottomless. This is a data point.</li>
+			<li>I am now aware of the appearance of {OBSERVED_nameShortPossessive} lower body. The information is stored.</li>
+			<li>A brief look confirmed {OBSERVED_nameShort} was not wearing pants. My brain processed this and moved on.</li>
+			<li>I saw {OBSERVED_nameShortPossessive} bare crotch. It was neither appealing nor unappealing.</li>
+			<li>I registered that {OBSERVED_nameShortPossessive} lower body was unclothed. It was a detail of the environment.</li>
+			<li>My observation: {OBSERVED_nameShort} is asleep and bottomless. This fact has been logged.</li>
+			<li>I happened to see her exposed genitals. It was an unremarkable occurrence.</li>
+			<li>The state of {OBSERVED_nameShortPossessive} dress was 'bottomless'. I continued my patrol.</li>
+			<li>I saw a vagina and an anus belonging to {OBSERVED_nameShort}. They are parts of a human body.</li>
+			<li>The visual information of {OBSERVED_nameShortPossessive} bare lower half was processed without an emotional response.</li>
+			<li>So, she sleeps without pants. Good to know, I guess.</li>
+			<li>My eyes briefly registered her bare buttocks and crotch before I looked away. It was of no importance.</li>
+			<li>I am aware that {OBSERVED_nameShort} is currently bottomless. This information does not require action.</li>
+			<li>I took note of the fact that {OBSERVED_nameShortPossessive} lower body was uncovered.</li>
+			<li>I saw {OBSERVED_nameShort} sleeping without pants. That is the full extent of the observation.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Bottomless_female_NegativeDef">
+		<defName>iSaw_Asleep_Bottomless_female_Negative</defName>
+        <label>iSaw_Asleep_Bottomless_female_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Vagina</requiredGenitalFamily>
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I saw {OBSERVED_nameShort} sleeping bottomless, and I was disgusted. She should cover herself up.</li>
+			<li>The sight of her exposed vagina and anus was deeply inappropriate. It's just not right.</li>
+			<li>I was annoyed to see her sleeping with her private parts exposed for all the world to see.</li>
+			<li>It was an unwelcome sight. Her lack of modesty is a sign of a flawed character.</li>
+			<li>I averted my eyes in distaste. Her crotch was just... out there. It was vulgar.</li>
+			<li>Honestly, it's just slovenly. To sleep bottomless where anyone could see is just inconsiderate.</li>
+			<li>I felt uncomfortable seeing her so exposed. It was a violation of basic decency.</li>
+			<li>The sight was not pleasant. Her bare, exposed genitals were a repulsive image.</li>
+			<li>Why can't she wear pants? The sight of her exposed crotch was just plain indecent.</li>
+			<li>I was appalled by the lack of shame. It's just not right to expose oneself so freely.</li>
+			<li>The casual nudity was off-putting. I have no desire to see my colonists' private parts.</li>
+			<li>I felt a flicker of revulsion. The sight of her bare flesh in such an intimate area was just... too much.</li>
+			<li>It was a graceless display. {OBSERVED_nameShort} should have more respect for herself and the people around her.</li>
+			<li>The image of her bare crotch is now stuck in my head, much to my irritation.</li>
+			<li>I found the sight of her bottomlessness to be a sign of a lazy and careless person.</li>
+			<li>It was an unprofessional and distracting sight. She needs to maintain some level of propriety, even in sleep.</li>
+			<li>I was immediately put off by the sight. It was a crude display that ruined my morning.</li>
+			<li>That's just not something I ever needed to see. Her exposed genitals made me feel awkward and angry.</li>
+			<li>I wish she would cover herself. It's a matter of basic respect for the community.</li>
+			<li>The sight was just pathetic. A woman of {OBSERVED_ageBiologicalYears} should know better than to sleep with her ass in the air.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+</Defs>

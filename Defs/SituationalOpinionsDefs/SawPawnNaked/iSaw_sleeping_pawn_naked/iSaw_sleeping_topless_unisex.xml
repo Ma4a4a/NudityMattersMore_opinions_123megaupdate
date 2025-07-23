@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Topless_Unisex_PositiveDef">
+		<defName>iSaw_Asleep_Topless_Unisex_Positive</defName>
+        <label>iSaw_Asleep_Topless_Unisex_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Topless</requiredObservedDressState>
+				<requiredBodyPartSeen>Chest</requiredBodyPartSeen>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I saw {OBSERVED_nameShort} sleeping without a top, and the view of {OBSERVED_possessive} bare chest was quite pleasing.</li>
+			<li>The sight of {OBSERVED_nameShortPossessive} bare chest was one of quiet strength and beauty.</li>
+			<li>It was nice to see {OBSERVED_nameShort} so at ease, {OBSERVED_possessive} chest rising and falling peacefully.</li>
+			<li>I admired the lines of {OBSERVED_nameShortPossessive} torso as {OBSERVED_pronoun} slept. A fine form indeed.</li>
+			<li>There was an appealing vulnerability to seeing {OBSERVED_nameShortPossessive} bare chest.</li>
+			<li>I caught a glimpse of {OBSERVED_nameShortPossessive} uncovered chest, and I must admit, it was a good sight.</li>
+			<li>The freedom of {OBSERVED_nameShortPossessive} topless slumber was attractive.</li>
+			<li>I found myself appreciating the view of {OBSERVED_nameShortPossessive} bare torso.</li>
+			<li>A simple, yet powerful sight. {OBSERVED_nameShortPossessive} bare chest was a testament to natural beauty.</li>
+			<li>My gaze lingered on {OBSERVED_nameShortPossessive} chest. It was a well-defined and pleasant landscape.</li>
+			<li>The sight brought a small smile to my face. It was a peaceful and attractive scene.</li>
+			<li>I felt a sense of warmth seeing {OBSERVED_nameShort} so comfortable and uncovered.</li>
+			<li>The bare skin of {OBSERVED_nameShortPossessive} chest looked smooth and inviting.</li>
+			<li>It was a captivating sight, the gentle rhythm of {OBSERVED_possessive} breathing visible on {OBSERVED_possessive} bare chest.</li>
+			<li>I was pleasantly surprised by the view of {OBSERVED_nameShortPossessive} topless form.</li>
+			<li>The sight was one of raw, simple beauty. I appreciated the moment.</li>
+			<li>I couldn't help but admire {OBSERVED_nameShortPossessive} physique, highlighted by {OBSERVED_possessive} lack of a shirt.</li>
+			<li>It was a moment of unguarded charm. {OBSERVED_nameShortPossessive} bare chest was endearing.</li>
+			<li>The view was excellent. I wouldn't mind seeing that again.</li>
+			<li>There's a certain honesty in sleeping bare-chested, and on {OBSERVED_nameShort}, it looked good.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Topless_Unisex_NeutralDef">
+		<defName>iSaw_Asleep_Topless_Unisex_Neutral</defName>
+        <label>iSaw_Asleep_Topless_Unisex_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Topless</requiredObservedDressState>
+				<requiredBodyPartSeen>Chest</requiredBodyPartSeen>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I noted that {OBSERVED_nameShort} was sleeping without a shirt.</li>
+			<li>{OBSERVED_nameShortPossessive} chest was bare. I made a mental note of it.</li>
+			<li>I observed {OBSERVED_nameShort} sleeping in a topless state.</li>
+			<li>My eyes passed over {OBSERVED_nameShortPossessive} bare torso. I had no reaction.</li>
+			<li>The subject was not wearing upper body garments. This fact was recorded.</li>
+			<li>{OBSERVED_nameShort} was bare-chested. It was a simple observation.</li>
+			<li>I am aware that {OBSERVED_nameShortPossessive} chest is currently uncovered.</li>
+			<li>I saw {OBSERVED_nameShortPossessive} chest. It was a part of {OBSERVED_possessive} body.</li>
+			<li>The visual data of a topless, sleeping {OBSERVED_nameShort} was processed.</li>
+			<li>It seems {OBSERVED_nameShort} sleeps without a top. That is a choice {OBSERVED_pronoun} has made.</li>
+			<li>I registered the sight of {OBSERVED_nameShortPossessive} bare chest and continued my tasks.</li>
+			<li>A glance confirmed {OBSERVED_nameShort} was topless. Nothing more to report.</li>
+			<li>I took note of {OBSERVED_nameShortPossessive} state of undress. It was unremarkable.</li>
+			<li>My path led me past a sleeping, topless {OBSERVED_nameShort}. I continued on.</li>
+			<li>I have seen {OBSERVED_nameShortPossessive} chest. This knowledge is now stored.</li>
+			<li>The lack of a shirt on {OBSERVED_nameShort} was noted.</li>
+			<li>It is a fact that {OBSERVED_nameShort} is currently topless.</li>
+			<li>I witnessed {OBSERVED_nameShort} sleeping without a top. It was a neutral event.</li>
+			<li>My attention was briefly on {OBSERVED_nameShortPossessive} bare chest before I moved on.</li>
+			<li>The observation of {OBSERVED_nameShortPossessive} toplessness has been logged.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Topless_Unisex_NegativeDef">
+		<defName>iSaw_Asleep_Topless_Unisex_Negative</defName>
+        <label>iSaw_Asleep_Topless_Unisex_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Topless</requiredObservedDressState>
+				<requiredBodyPartSeen>Chest</requiredBodyPartSeen>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>Does {OBSERVED_pronoun} have to sleep like that? Put a shirt on, for goodness sake.</li>
+			<li>The sight of {OBSERVED_nameShortPossessive} bare chest was rather unpleasant.</li>
+			<li>I was irritated by the lack of decorum. Sleeping topless is just sloppy.</li>
+			<li>It was an unwelcome sight. I have no desire to see {OBSERVED_nameShortPossessive} bare torso.</li>
+			<li>I found the sight of {OBSERVED_nameShortPossessive} bare chest to be off-putting.</li>
+			<li>It's a matter of basic decency. They should cover up.</li>
+			<li>The sight was crude and made me uncomfortable.</li>
+			<li>I felt my lip curl in distaste. It was not a pleasant image.</li>
+			<li>Why would someone sleep so exposed? It's just improper.</li>
+			<li>I was annoyed by the casual display of flesh. It's just inconsiderate.</li>
+			<li>The sight of {OBSERVED_nameShortPossessive} bare chest was an unwelcome distraction.</li>
+			<li>I wish I hadn't seen that. It was a rather gross sight.</li>
+			<li>That's just not right. It's a breach of communal living standards.</li>
+			<li>I was unimpressed by the lack of modesty. It shows poor character.</li>
+			<li>The sight filled me with a sense of unease. It was just... wrong.</li>
+			<li>I averted my eyes, but the unpleasant image lingered.</li>
+			<li>It was a slovenly and graceless way to sleep. I was not impressed.</li>
+			<li>The sight soured my mood. It was an unnecessary and unpleasant discovery.</li>
+			<li>I felt my personal space was violated by the sight of {OBSERVED_possessive} bare chest.</li>
+			<li>It was a pathetic display. A person of {OBSERVED_ageBiologicalYears} should know better.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+</Defs>

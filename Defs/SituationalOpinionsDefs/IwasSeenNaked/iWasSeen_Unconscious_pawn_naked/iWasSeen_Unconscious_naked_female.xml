@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Unconscious_naked_female_PositiveDef">
+		<defName>iWasSeen_Unconscious_naked_female_Positive</defName>
+        <label>iWasSeen_Unconscious_naked_female_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Unconscious</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>My head was pounding, but a different kind of pulse started when I realized I was completely bare. To be so helpless, so utterly exposed... a forbidden fantasy I didn't know I had.</li>
+			<li>As consciousness returned, the first thing I felt was the cool air on my nipples and between my thighs. A slow, wicked smile spread across my face. What a show I must have been.</li>
+			<li>I woke up on my back, limbs splayed and everything on display. My breasts, my stomach, my open vulva... A hot flush of excitement washed over me at the thought of who might have been watching.</li>
+			<li>They could have done anything to me while I was out. The thought of them just looking, seeing every inch of my naked body, sent a thrill of submission through me.</li>
+			<li>My body was an open book while I was unconscious. I hope whoever found me was a thorough reader, taking in every curve of my breasts and the secrets between my legs.</li>
+			<li>To be seen in such a state of total vulnerability, completely naked and unaware... it feels strangely liberating. I feel a secret tingling in my anus just thinking about it.</li>
+			<li>I came to, feeling a strange stickiness on my inner thighs. My mind raced with possibilities, each one more thrilling than the last. Being seen was just the beginning.</li>
+			<li>My clothes were gone. I was laid out like an offering. The thought of eyes roving over my helpless, naked form makes my nipples harden.</li>
+			<li>I was completely exposed, my vagina and anus offered up to the world while I was lost to it. The idea that someone took their time to look is intensely arousing.</li>
+			<li>Waking up naked after being knocked out is a strange kind of rush. It's a raw, primal feeling of being seen and desired, even in my weakest moment.</li>
+			<li>The world swam back into focus, and I saw my own bare breasts pointing towards the ceiling. A giggle escaped my lips. I wonder if they bounced when they carried me.</li>
+			<li>I was out cold, a naked damsel in distress. The thought is almost romantic, in a twisted sort of way. I hope my hero enjoyed the view.</li>
+			<li>My body feels... appreciated. The way I was left, completely nude and artfully arranged, suggests someone liked what they saw. I can't help but feel flattered.</li>
+			<li>A wave of dizziness, then a wave of pure exhibitionist glee. I was a naked, unconscious spectacle. My clit throbs at the thought.</li>
+			<li>I wonder if they touched me. The thought of hands exploring my bare skin while I was helpless is almost too much to handle. A delicious shiver runs down my spine.</li>
+			<li>My ass was probably on full display when they dragged me here. I can just imagine my cheeks jiggling, my anus winking at my saviors. The thought is exhilarating.</li>
+			<li>I feel like a work of art that was put on display. Every part of me, from my breasts to my vulva, was visible. I feel a strange sense of pride.</li>
+			<li>The memory is hazy, but the feeling is sharp and clear: a thrill of being utterly exposed. My body was a feast for the eyes, and I was none the wiser.</li>
+			<li>I was a blank slate, a naked canvas for anyone's imagination. The idea that someone's fantasies might have centered on my unconscious body is a potent aphrodisiac.</li>
+			<li>Waking up naked and vulnerable should be scary, but all I feel is a deep, resonant thrum of excitement. I was seen, truly seen.</li>
+		</opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Unconscious_naked_female_NeutralDef">
+		<defName>iWasSeen_Unconscious_naked_female_Neutral</defName>
+        <label>iWasSeen_Unconscious_naked_female_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Unconscious</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I was unconscious. Now I'm awake. And naked. It's just a sequence of events.</li>
+			<li>My head hurts. I'm naked. The floor is cold. That's the summary of my current situation.</li>
+			<li>Woke up without clothes. I suppose they were damaged or had to be removed for medical reasons. It's practical.</li>
+			<li>The lack of clothing is the least of my concerns right now. First, figure out what happened. Then, find pants.</li>
+			<li>My body is just a body. Being seen naked while unconscious doesn't change its function. It's just... skin.</li>
+			<li>I seem to be missing my clothes. It's a data point. Nothing more, nothing less.</li>
+			<li>Consciousness returning is a slow process. The fact that I'm nude is just one of the details coming into focus. It doesn't register emotionally.</li>
+			<li>So, I was naked. People have seen naked bodies before. It's not a novel concept.</li>
+			<li>I was vulnerable, yes. But worrying about who saw my breasts or my ass seems like a waste of energy when I need to assess the real danger.</li>
+			<li>My clothes are gone. I'll need new ones. It's a logistical problem.</li>
+			<li>I feel a draft. I suppose that's what happens when you're naked. I should probably move.</li>
+			<li>My body feels like a stranger's right now anyway. Its state of dress, or undress, is equally detached from me.</li>
+			<li>Okay, I'm nude. Acknowledged. Moving on to more pressing issues, like the massive headache.</li>
+			<li>I was out, people saw my body. It's a thing that happened. The world continues to turn.</li>
+			<li>I suppose being naked is better than being dead. I'll take it.</li>
+			<li>I'm aware that my genitals were likely visible. It's a biological fact, not a source of drama.</li>
+			<li>The state of my body is secondary to its condition. Is anything broken? No? Good. The nudity is irrelevant.</li>
+			<li>I've been through worse. Being seen naked is low on my list of traumatic experiences.</li>
+			<li>I should probably find something to cover up with, for warmth if nothing else. Practicality first.</li>
+			<li>Waking up naked is just another weird thing that's happened in this place. I'm not even surprised.</li>
+		</opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Unconscious_naked_female_NegativeDef">
+		<defName>iWasSeen_Unconscious_naked_female_Negative</defName>
+        <label>iWasSeen_Unconscious_naked_female_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				<requiredObservedGender>Female</requiredObservedGender>
+				<requiredPawnState>Unconscious</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>The fog in my mind cleared, replaced by sheer panic. I was naked. Helpless. What did they do? What did they see?</li>
+			<li>A cold dread washed over me, colder than the air on my bare skin. I was a piece of meat on a slab for anyone to look at.</li>
+			<li>My hands flew to cover myself, a pathetic gesture now. The violation has already happened. They saw everything while I was unconscious.</li>
+			<li>I feel disgusting, exposed, and powerless. Someone stripped me while I was out. The thought makes me want to vomit.</li>
+			<li>Who did this? Who looked at me? The thought of some pervert's eyes on my breasts, my vagina... it makes my skin crawl.</li>
+			<li>My body was treated like an object. Stripped bare and left for viewing. The humiliation is a physical weight on my chest.</li>
+			<li>I feel a deep, burning shame. To be so vulnerable, so completely exposed without my consent... it's unforgivable.</li>
+			<li>The memory of unconsciousness is now tainted with this horror. I wasn't just hurt; I was degraded.</li>
+			<li>Every shadow in the room feels like a pair of eyes that have already seen too much. I'll never feel clean again.</li>
+			<li>I can't stop imagining them looking at me, maybe laughing. My unconscious body, my sagging breasts, my exposed anus... it's a nightmare.</li>
+			<li>This isn't just about nudity. It's about being taken advantage of at my weakest. It's a profound violation.</li>
+			<li>I feel a rage building inside me. Someone will pay for this humiliation. For seeing me like that.</li>
+			<li>I'm shaking with a mixture of fear and anger. My privacy was stolen from me while I couldn't even fight back.</li>
+			<li>The thought of their gaze on my intimate parts makes me feel dirty, used. I want to scrub my skin raw.</li>
+			<li>I was helpless, and they took advantage. They didn't just see me; they defiled me with their eyes.</li>
+			<li>I feel so small and fragile. My body, which should be my own, was a spectacle for others.</li>
+			<li>This is a wound that won't show on the outside. The knowledge that I was seen, so intimately and without my permission, will haunt me.</li>
+			<li>I can't look at my own body without feeling a sense of revulsion now, knowing it was on display.</li>
+			<li>The air feels contaminated, filled with the memory of their stares. I can't breathe.</li>
+			<li>I was unconscious, not dead. I deserved dignity. I deserved privacy. They took that from me.</li>
+		</opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+</Defs>

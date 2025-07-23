@@ -159,6 +159,7 @@
         
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>
@@ -244,6 +245,7 @@
         
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>
@@ -345,6 +347,7 @@
         <li>emotion->perverted</li>
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>
@@ -624,6 +627,7 @@
         
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
       <rulesStrings>
         <li>r_logentry->[INITIATOR_nameDef] saw [RECIPIENT_nameDef] raping someone.</li>
@@ -716,6 +720,7 @@
         
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
       <rulesStrings>
         <li>r_logentry->[INITIATOR_nameDef] saw [RECIPIENT_nameDef] was raped by someone.</li>
@@ -1647,6 +1652,7 @@
         
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>
@@ -2873,6 +2879,7 @@
         
       </rulesStrings>
     </logRulesInitiator>
+	
     <logRulesRecipient>
 	<!-- B observed A, while A was naked -->
       <rulesStrings>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Asleep_Bottomless_Male_PositiveDef">
+		<defName>iWasSeen_Asleep_Bottomless_Male_Positive</defName>
+        <label>iWasSeen_Asleep_Bottomless_Male_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Penis</requiredGenitalFamily>
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I woke up with a breeze where there shouldn't be one. Realizing I was bottomless, I just grinned. Hope whoever saw me was impressed.</li>
+			<li>My pants were gone. Waking up with my junk out felt primal and free. A part of me hoped for an audience.</li>
+			<li>I stretched out, feeling the freedom of having no pants on. The thought that someone might have seen me was a fun, mischievous secret.</li>
+			<li>Realizing I'd slept without bottoms gave me a jolt of raw, masculine energy. It felt good to be so unrestrained.</li>
+			<li>I opened my eyes and saw the blanket had shifted, leaving me exposed. I felt a surge of confident amusement. Let them look.</li>
+			<li>The cool air on my bare skin was invigorating. The idea of being seen like this added a bit of a thrill to the morning.</li>
+			<li>I lay there for a moment, enjoying the lack of confinement. Being seen would just be part of the story.</li>
+			<li>I'm a warm sleeper, so this isn't a surprise. Waking up with everything hanging out felt natural and unashamed.</li>
+			<li>The thought of someone getting a free show while I slept... I found it strangely flattering.</li>
+			<li>I woke on my stomach, my bare ass in the air. I chuckled. Must have been quite a sight.</li>
+			<li>Being exposed while I slept didn't feel vulnerable, it felt dominant. Like I owned the space, clothes or not.</li>
+			<li>The sensation of total freedom was a great way to wake up. If someone saw, that's their business. I was comfortable.</li>
+			<li>I shifted my hips, enjoying the direct contact with the sheets. The idea of being watched was a welcome fantasy.</li>
+			<li>Waking up bottomless felt like a statement: I'm comfortable in my own skin. I felt a surge of pride.</li>
+			<li>I wondered what kind of impression I made, sleeping so freely. The thought was more entertaining than worrying.</li>
+			<li>The vulnerability of being so exposed was a rush. It was a reminder of my own raw physicality, and I liked it.</li>
+			<li>Must have kicked my pants off in a dream. Waking up so unencumbered was great, and I wouldn't have minded an observer.</li>
+			<li>I felt a spark of exhibitionist confidence. My body was on display, and I found the idea powerful.</li>
+			<li>The morning light on my bare legs felt good. It was a masculine, natural state, and I hoped it was seen as such.</li>
+			<li>I woke up with a feeling of boldness. I had unknowingly been at my most raw, and the thought was empowering.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Asleep_Bottomless_Male_NeutralDef">
+		<defName>iWasSeen_Asleep_Bottomless_Male_Neutral</defName>
+        <label>iWasSeen_Asleep_Bottomless_Male_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Penis</requiredGenitalFamily>
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I woke up without pants on. It happens.</li>
+			<li>My lower half was bare. It was a bit chilly, so I found the blanket.</li>
+			<li>Seems I kicked off my pants again. I should probably find them.</li>
+			<li>Woke up bottomless. I was comfortable, so whatever.</li>
+			<li>I noticed I was exposed from the waist down. I just got up and started my day.</li>
+			<li>I'm a restless sleeper, so this is pretty standard.</li>
+			<li>There was a draft. Realized it's because I had no pants on. I didn't give it much thought.</li>
+			<li>I woke up, noticed I was bottomless, and then my mind immediately went to what's for breakfast.</li>
+			<li>It must have gotten warm last night. Waking up without pants seems like a reasonable unconscious decision.</li>
+			<li>My legs were tangled in the sheets, and my pants were somewhere in the mess. It was a minor morning puzzle.</li>
+			<li>I felt the air on my skin and realized I was bare from the waist down. It was a simple observation.</li>
+			<li>I woke up. I was bottomless. The sun was up. Time to get to work.</li>
+			<li>My body must have decided it didn't want pants on last night. I didn't really notice until I woke up.</li>
+			<li>I took a moment to find my pants before getting out of bed. It was just a thing to do.</li>
+			<li>Waking up exposed like this is just something that happens. No point in making a big deal out of it.</li>
+			<li>I registered my state of undress, but my thoughts were already on my duties.</li>
+			<li>I was bottomless. I blinked, processed it, and then rolled over for a few more minutes of rest.</li>
+			<li>The state of my clothing, or lack thereof, was not particularly noteworthy.</li>
+			<li>I woke up feeling neither embarrassed nor proud about being bottomless, just... awake.</li>
+			<li>I found my pants on the floor. I must have been really out of it.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_Asleep_Bottomless_Male_NegativeDef">
+		<defName>iWasSeen_Asleep_Bottomless_Male_Negative</defName>
+        <label>iWasSeen_Asleep_Bottomless_Male_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+				<isSelfOpinion>true</isSelfOpinion>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Penis</requiredGenitalFamily>
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I woke with a start, realizing I was completely bare from the waist down. A hot flush of embarrassment made my skin crawl.</li>
+			<li>My heart pounded when I realized I was exposed. The thought of someone seeing my genitals on display is mortifying.</li>
+			<li>I felt a wave of pure panic. I was asleep, bottomless, and totally vulnerable. I've never felt so foolish.</li>
+			<li>I scrambled to cover myself, my hands fumbling with the blanket. The humiliation is intense. How could I be so careless?</li>
+			<li>The air felt cold and mocking on my bare skin. I feel disgusting and exposed, as if my dignity has been stripped away.</li>
+			<li>I feel a deep, burning shame. To be seen like that... it's a degrading nightmare.</li>
+			<li>My mind is racing. Who saw me? Were they laughing? I feel sick with anxiety.</li>
+			<li>I feel so stupid and exposed. I wish I could just disappear.</li>
+			<li>A cold dread washed over me as I realized my situation. I feel like less of a man, somehow, for being seen in such a helpless state.</li>
+			<li>I woke up feeling like something was terribly wrong, and then I saw why. My own body, a source of public spectacle. I wanted to punch something.</li>
+			<li>The room feels hostile now. My own bed feels like a place of shame.</li>
+			<li>I can't stop thinking about it. Me, asleep, completely exposed. It's an invasive, infuriating thought.</li>
+			<li>I'm filled with a helpless anger, mostly at myself. How could I let my guard down so completely?</li>
+			<li>I feel a desperate need to regain my composure, but the feeling of being seen and judged is hard to shake.</li>
+			<li>The vulnerability is emasculating. I feel like a joke, and it makes my blood boil.</li>
+			<li>I'm terrified of who might have seen me. The thought of their eyes on me is unbearable.</li>
+			<li>I pulled the blanket around myself tightly, but it couldn't block out the memory of being so utterly exposed.</li>
+			<li>I feel a profound sense of compromised privacy. It was stolen from me while I was unconscious.</li>
+			<li>Every sound seems like a snicker. I'm paranoid and ashamed.</li>
+			<li>I wish I could just forget this ever happened. But the memory is a fresh wound, stinging with humiliation and anger.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+</Defs>

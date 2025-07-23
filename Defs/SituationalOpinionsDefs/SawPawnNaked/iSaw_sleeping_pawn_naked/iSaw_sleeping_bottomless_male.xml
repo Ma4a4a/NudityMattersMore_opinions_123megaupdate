@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Bottomless_Male_PositiveDef">
+		<defName>iSaw_Asleep_Bottomless_Male_Positive</defName>
+        <label>iSaw_Asleep_Bottomless_Male_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Penis</requiredGenitalFamily>
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I saw {OBSERVED_nameShort} sleeping without pants, and I have to admit, the view of his cock and balls was impressive.</li>
+			<li>{OBSERVED_nameShortPossessive} legs were spread slightly, revealing his manhood in its relaxed state. It was a potent sight.</li>
+			<li>My eyes were drawn to the heavy weight of {OBSERVED_nameShortPossessive} scrotum and the soft length of his penis. A fine specimen.</li>
+			<li>I caught sight of {OBSERVED_nameShortPossessive} bottomless form. The powerful curve of his ass was a sight to behold.</li>
+			<li>The air crackled with a masculine energy as I gazed upon {OBSERVED_nameShortPossessive} bare lower half. His penis looked thick even when soft.</li>
+			<li>A vision of raw masculinity. {OBSERVED_nameShortPossessive} bare buttocks and the dark line of his perineum were captivating.</li>
+			<li>I felt a jolt of heat seeing him so exposed. {OBSERVED_nameShortPossessive} balls looked so full and heavy.</li>
+			<li>He was a sleeping king, {OBSERVED_nameShortPossessive} lower body a throne of flesh that I was privileged to witness.</li>
+			<li>The sight of {OBSERVED_nameShortPossessive} bare crotch was a powerful fantasy. I couldn't look away from his dick.</li>
+			<li>{OBSERVED_nameShortPossessive} bottomless slumber was a gift. The intimate view of his penis and anus was a secret I'm happy to keep.</li>
+			<li>I was mesmerized by the sheer power of {OBSERVED_nameShortPossessive} exposed form. His cock was a perfect, sleeping beast.</li>
+			<li>My pulse raced as I took in the view. {OBSERVED_nameShortPossessive} bare ass and the promise of what lay between his legs was a potent mix.</li>
+			<li>He slept on, unaware of the primal thoughts he was inspiring in me. {OBSERVED_nameShortPossessive} exposed lower body was a landscape of muscle and flesh.</li>
+			<li>What a magnificent view. The dark hair of {OBSERVED_nameShortPossessive} pubis was the center of my attention.</li>
+			<li>I felt a magnetic pull towards him. The sight of {OBSERVED_nameShortPossessive} unguarded manhood was an invitation I wanted to accept.</li>
+			<li>The image of {OBSERVED_nameShortPossessive} exposed penis is one I will enjoy replaying in my mind.</li>
+			<li>{OBSERVED_nameShortPossessive} bareness was a form of art. The way his cock rested against his thigh was a study in relaxed power.</li>
+			<li>I felt a deep sense of appreciation for the male form as I watched him sleep, so beautifully exposed.</li>
+			<li>The sight was both intimate and exhilarating. {OBSERVED_nameShortPossessive} bottomless state showed off his best assets.</li>
+			<li>A perfect, private moment. Just me and the sight of his handsome, bare lower body.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Bottomless_Male_NeutralDef">
+		<defName>iSaw_Asleep_Bottomless_Male_Neutral</defName>
+        <label>iSaw_Asleep_Bottomless_Male_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Penis</requiredGenitalFamily>
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I noticed {OBSERVED_nameShort} was sleeping without pants. His genitals were visible.</li>
+			<li>{OBSERVED_nameShort} was bottomless. I registered this observation and went about my business.</li>
+			<li>My gaze passed over {OBSERVED_nameShort}, and I noted his lack of lower clothing. I didn't think anything of it.</li>
+			<li>I saw {OBSERVED_nameShortPossessive} penis while he was sleeping. It was a neutral anatomical sight.</li>
+			<li>The subject, {OBSERVED_nameShort}, was observed sleeping without trousers. Penis and anus were exposed.</li>
+			<li>It seems {OBSERVED_nameShort} prefers to sleep bottomless. This is a fact.</li>
+			<li>I am now aware of what {OBSERVED_nameShortPossessive} lower body looks like. The data is stored.</li>
+			<li>A brief look confirmed {OBSERVED_nameShort} was not wearing pants. My brain processed this information and moved on to other calculations.</li>
+			<li>I saw his bare crotch. It was neither interesting nor uninteresting.</li>
+			<li>I registered that his lower body was unclothed. It was a detail of the current room's state.</li>
+			<li>My observation: {OBSERVED_nameShort} is asleep and bottomless. This fact has been entered into the log.</li>
+			<li>I happened to see his exposed genitals. It was an unremarkable moment.</li>
+			<li>The state of {OBSERVED_nameShortPossessive} dress was noted as 'bottomless'. I resumed my duties.</li>
+			<li>I saw a penis and an anus belonging to {OBSERVED_nameShort}. They are parts of the human anatomy.</li>
+			<li>The visual information of his bare lower half was processed without any associated emotional flags.</li>
+			<li>So, he sleeps without pants. That's a piece of information I now possess.</li>
+			<li>My eyes briefly registered his bare buttocks and crotch before I continued on my way. It was of no significance.</li>
+			<li>I am aware that {OBSERVED_nameShort} is currently bottomless. This state does not require intervention.</li>
+			<li>I took note of the fact that his lower body was uncovered.</li>
+			<li>I saw {OBSERVED_nameShort} sleeping without pants. That is the complete observation.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iSaw_Asleep_Bottomless_Male_NegativeDef">
+		<defName>iSaw_Asleep_Bottomless_Male_Negative</defName>
+        <label>iSaw_Asleep_Bottomless_Male_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserver</perspective>
+                <requiredObservedDressState>Bottomless</requiredObservedDressState>
+				<requiredBodyPartSeen>Genitals</requiredBodyPartSeen>
+				<requiredGenitalFamily>Penis</requiredGenitalFamily>
+				<requiredObservedGender>Male</requiredObservedGender>
+				<requiredPawnState>Asleep</requiredPawnState>
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I saw {OBSERVED_nameShort} sleeping bottomless, and I was disgusted. He needs to learn some decency.</li>
+			<li>The sight of his exposed penis and anus was thoroughly unpleasant. It's just improper.</li>
+			<li>I was irritated to see him sleeping with his junk hanging out for anyone to see.</li>
+			<li>It was an unwelcome sight. His lack of modesty is a clear sign of his character.</li>
+			<li>I averted my eyes in disgust. His crotch was just... there. It was a crude sight.</li>
+			<li>Honestly, it's just slovenly. To sleep bottomless where people are trying to live is inconsiderate.</li>
+			<li>I felt uncomfortable seeing him so exposed. It was a violation of my personal space and comfort.</li>
+			<li>The sight was not appealing. His bare, exposed genitals were a repulsive image.</li>
+			<li>Why can't he wear pants? The sight of his exposed crotch was just plain gross.</li>
+			<li>I was appalled by the lack of shame. It's just not right to expose yourself like that, even in sleep.</li>
+			<li>The casual nudity was off-putting. I have no desire to see my fellow colonists' private parts.</li>
+			<li>I felt a flicker of revulsion. The sight of his hairy ass was just... too much information.</li>
+			<li>It was a graceless display. {OBSERVED_nameShort} should have more respect for the community.</li>
+			<li>The image of his limp dick is now burned into my retinas, much to my annoyance.</li>
+			<li>I found the sight of his bottomlessness to be a sign of a lazy and undisciplined person.</li>
+			<li>It was an unprofessional and distracting sight. He needs to maintain some level of decorum.</li>
+			<li>I was immediately put off by the sight. It was a vulgar display that started my day off on the wrong foot.</li>
+			<li>That's just not something I ever wanted to see. His exposed genitals made me feel awkward and angry.</li>
+			<li>I wish he would cover himself. It's a matter of basic respect for others in this colony.</li>
+			<li>The sight was just pathetic. A man of {OBSERVED_ageBiologicalYears} should know better than to sleep with his ass hanging out.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+</Defs>

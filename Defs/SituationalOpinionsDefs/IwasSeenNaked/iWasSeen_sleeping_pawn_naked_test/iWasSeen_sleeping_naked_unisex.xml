@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_sleeping_naked_Unisex_PositiveDef">
+		<defName>iWasSeen_sleeping_naked_Unisex_Positive</defName>
+        <label>iWasSeen_sleeping_naked_Unisex_(Positive)</label>
+        <opinionCategory>Positive</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				<isSelfOpinion>true</isSelfOpinion>
+				<requiredPawnState>Asleep</requiredPawnState>
+				
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I slept completely naked, I hope someone could enjoy my private parts.</li>
+			<li>I was naked while I was sleeping, I was ready to tie my open legs to the bed, if only someone would see all my charms.</li>
+			<li>I slept naked with my legs spread out, I feel horny, that someone could stare at my body with a lustful gaze for a long time.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_sleeping_naked_Unisex_NeutralDef">
+		<defName>iWasSeen_sleeping_naked_Unisex_Neutral</defName>
+        <label>iWasSeen_sleeping_naked_Unisex_(Neutral)</label>
+        <opinionCategory>Neutral</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				<isSelfOpinion>true</isSelfOpinion>
+				<requiredPawnState>Asleep</requiredPawnState>
+				
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I slept naked, I only care about my comfort, not prying eyes.</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+	
+	
+	<NudityMattersMore_opinions.OpinionDef_Situational Name="iWasSeen_sleeping_naked_Unisex_NegativeDef">
+		<defName>iWasSeen_sleeping_naked_Unisex_Negative</defName>
+        <label>iWasSeen_sleeping_naked_Unisex_(Negative)</label>
+        <opinionCategory>Negative</opinionCategory>
+        <modExtensions>
+            <li Class="NudityMattersMore_opinions.OpinionConditionExtension_Situational">
+                <perspective>UsedForObserved</perspective>
+                <requiredObservedDressState>Naked</requiredObservedDressState>
+				<isSelfOpinion>true</isSelfOpinion>
+				<requiredPawnState>Asleep</requiredPawnState>
+				
+            </li>
+        </modExtensions>
+		<opinionTexts>
+			<li>I slept completely naked, someone would stare at mt private parts, but I will never find out.</li>
+			<li>I slept naked! The thought of lustful perverts raping my defenseless body horrifies me!</li>
+        </opinionTexts>
+    </NudityMattersMore_opinions.OpinionDef_Situational>
+
+
+
+	
+</Defs>
