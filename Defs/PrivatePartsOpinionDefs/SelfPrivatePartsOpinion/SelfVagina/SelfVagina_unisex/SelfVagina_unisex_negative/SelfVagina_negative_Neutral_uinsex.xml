@@ -13,8 +13,8 @@
         <modExtensions>
             <li Class="NudityMattersMore_opinions.OpinionConditionExtension">
 				<isSelfOpinion>true</isSelfOpinion>
-                <requiredObserverGender>None</requiredObserverGender>
-                <requiredObservedGender>None</requiredObservedGender>
+                
+                
                 <requiredObserverNeedSexState>Neutral</requiredObserverNeedSexState>
                 <requiredObservedNeedSexState>Neutral</requiredObservedNeedSexState>
             </li>
@@ -64,8 +64,8 @@
         <modExtensions>
             <li Class="NudityMattersMore_opinions.OpinionConditionExtension">
 				<isSelfOpinion>true</isSelfOpinion>
-                <requiredObserverGender>None</requiredObserverGender>
-                <requiredObservedGender>None</requiredObservedGender>
+                
+                
                 <requiredObserverNeedSexState>Neutral</requiredObserverNeedSexState>
                 <requiredObservedNeedSexState>Neutral</requiredObservedNeedSexState>
             </li>
@@ -115,8 +115,8 @@
         <modExtensions>
             <li Class="NudityMattersMore_opinions.OpinionConditionExtension">
 				<isSelfOpinion>true</isSelfOpinion>
-                <requiredObserverGender>None</requiredObserverGender>
-                <requiredObservedGender>None</requiredObservedGender>
+                
+                
                 <requiredObserverNeedSexState>Neutral</requiredObserverNeedSexState>
                 <requiredObservedNeedSexState>Neutral</requiredObservedNeedSexState>
             </li>
@@ -166,8 +166,8 @@
         <modExtensions>
             <li Class="NudityMattersMore_opinions.OpinionConditionExtension">
 				<isSelfOpinion>true</isSelfOpinion>
-                <requiredObserverGender>None</requiredObserverGender>
-                <requiredObservedGender>None</requiredObservedGender>
+                
+                
                 <requiredObserverNeedSexState>Neutral</requiredObserverNeedSexState>
                 <requiredObservedNeedSexState>Neutral</requiredObservedNeedSexState>
             </li>
@@ -216,8 +216,8 @@
         <modExtensions>
             <li Class="NudityMattersMore_opinions.OpinionConditionExtension">
 				<isSelfOpinion>true</isSelfOpinion>
-                <requiredObserverGender>None</requiredObserverGender>
-                <requiredObservedGender>None</requiredObservedGender>
+                
+                
                 <requiredObserverNeedSexState>Neutral</requiredObserverNeedSexState>
                 <requiredObservedNeedSexState>Neutral</requiredObservedNeedSexState>
             </li>
@@ -266,8 +266,8 @@
         <modExtensions>
             <li Class="NudityMattersMore_opinions.OpinionConditionExtension">
 				<isSelfOpinion>true</isSelfOpinion>
-                <requiredObserverGender>None</requiredObserverGender>
-                <requiredObservedGender>None</requiredObservedGender>
+                
+                
                 <requiredObserverNeedSexState>Neutral</requiredObserverNeedSexState>
                 <requiredObservedNeedSexState>Neutral</requiredObservedNeedSexState>
             </li>
