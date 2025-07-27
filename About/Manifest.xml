@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
 	<identifier>Nudity Matters More opinions</identifier>
-	<version>1.0.6</version>
+	<version>1.0.8</version>
 	<dependencies/>
 	<incompatibleWith/>
 	<loadAfter/>
@@ -12,6 +12,22 @@
 
 
 <!-- Version History:
+
+Nudity Matters More opinions 1.0.8
+Rimworld 1.5
+
+Fixes:
+Removed {PAWN_reflexive} tag from descriprions, as it was not used and caused incorect opinion display.
+Covering was redone, now it will corrctly register in log. (previosly it worked like 50% and sometimes was skipping)
+
+
+Nudity Matters More opinions 1.0.7
+Rimworld 1.5
+
+Fixes:
+Removed filters for gender in self unisex descriptions. (should allow self private parts descriptions for non binary genders)
+As i researched, it seems that gender "none" is not correct tag, and that could possibly blocked opinions to show up for non binary genders.
+
 
 Nudity Matters More opinions 1.0.6
 Rimworld 1.5

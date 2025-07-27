@@ -59,8 +59,9 @@ namespace NudityMattersMore_opinions
         }
 
 
-        // +++  COOLDOWN TO PREVENT DUPLICATION +++
-        private const int OpinionCooldownTicks = 10; // Short cooldown to prevent instant doubles.
+        // +++ COOLDOWN TO PREVENT DUPLICATION +++
+        // УВЕЛИЧЕНО: Было 10, теперь 60 тиков (1 секунда). Это поможет избежать пропусков записей.
+        private const int OpinionCooldownTicks = 60;
         private static Dictionary<Tuple<Pawn, Pawn>, int> lastOpinionTick = new Dictionary<Tuple<Pawn, Pawn>, int>();
 
 

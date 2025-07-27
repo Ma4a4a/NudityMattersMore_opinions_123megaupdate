@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|c:\\users\\shark\\desktop\\nuditymattersmore_opinions\\nuditymattersmore_opinions\\source\\situational opinions\\situationalopinionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\situational opinions\\situationalopinionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|solutionrelative:situational opinions\\situationalopinionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|c:\\users\\shark\\desktop\\nuditymattersmore_opinions\\nuditymattersmore_opinions\\source\\social log notification\\nmmfixationlogpatch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|solutionrelative:social log notification\\nmmfixationlogpatch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\situational opinions\\nmmopinionsmapcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -32,7 +28,7 @@
               "RelativeDocumentMoniker": "Situational opinions\\SituationalOpinionHelper.cs",
               "ToolTip": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Situational opinions\\SituationalOpinionHelper.cs",
               "RelativeToolTip": "Situational opinions\\SituationalOpinionHelper.cs",
-              "ViewState": "AgIAAHYDAAAAAAAAAAArwI0DAAARAAAAAAAAAA==",
+              "ViewState": "AgIAADIAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-23T20:14:15.29Z",
               "EditorCaption": ""
@@ -40,25 +36,12 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "NMMFixationLogPatch.cs",
-              "DocumentMoniker": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Social log notification\\NMMFixationLogPatch.cs",
-              "RelativeDocumentMoniker": "Social log notification\\NMMFixationLogPatch.cs",
-              "ToolTip": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Social log notification\\NMMFixationLogPatch.cs",
-              "RelativeToolTip": "Social log notification\\NMMFixationLogPatch.cs",
-              "ViewState": "AgIAAO0AAAAAAAAAAADwvwEBAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-23T17:46:36.588Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "NMMOpinionsMapComponent.cs",
               "DocumentMoniker": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Situational opinions\\NMMOpinionsMapComponent.cs",
               "RelativeDocumentMoniker": "Situational opinions\\NMMOpinionsMapComponent.cs",
               "ToolTip": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Situational opinions\\NMMOpinionsMapComponent.cs",
               "RelativeToolTip": "Situational opinions\\NMMOpinionsMapComponent.cs",
-              "ViewState": "AgIAAE8AAAAAAAAAAAAAwGMAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAcwHYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-22T21:05:39.327Z",
               "EditorCaption": ""

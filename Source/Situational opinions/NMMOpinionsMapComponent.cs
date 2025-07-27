@@ -73,9 +73,11 @@ namespace NudityMattersMore_opinions
                     continue;
                 }
 
-                // УЛУЧШЕННОЕ ИСПРАВЛЕНИЕ: Проверяем на состояние 'None' более корректным способом.
-                // Это отфильтровывает "пустые" или незавершенные взаимодействия.
-                if (interaction.PawnState == PawnState.None)
+                // УЛУЧШЕННОЕ ИСПРАВЛЕНИЕ: Проверяем на состояние 'None' более корректным способом,
+                // но позволяем Processing для InteractionType.Covering, даже если PawnState равно None,
+                // так как это может быть переходное состояние или специфическое для "прикрытия".
+                // Динамические пузырьки могут срабатывать и в этих случаях, а лог - нет.
+                if (interaction.InteractionType != NudityMattersMore.InteractionType.Covering && interaction.PawnState == PawnState.None)
                 {
                     continue;
                 }

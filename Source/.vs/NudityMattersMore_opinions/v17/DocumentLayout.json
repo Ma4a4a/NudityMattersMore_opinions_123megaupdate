@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|c:\\users\\shark\\desktop\\nuditymattersmore_opinions\\nuditymattersmore_opinions\\source\\situational opinions\\situationalopinionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|solutionrelative:situational opinions\\situationalopinionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|c:\\users\\shark\\desktop\\nuditymattersmore_opinions\\nuditymattersmore_opinions\\source\\tab related\\itab_pawn_nmmopinions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|solutionrelative:tab related\\itab_pawn_nmmopinions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|c:\\users\\shark\\desktop\\nuditymattersmore_opinions\\nuditymattersmore_opinions\\source\\social log notification\\nmmfixationlogpatch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|solutionrelative:social log notification\\nmmfixationlogpatch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\situational opinions\\nmmopinionsmapcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|solutionrelative:situational opinions\\nmmopinionsmapcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|c:\\users\\shark\\desktop\\nuditymattersmore_opinions\\nuditymattersmore_opinions\\source\\private parts opinions\\opinionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF15AE5C-FDD9-437F-A25F-44C009DEED81}|NudityMattersMore_opinions.csproj|solutionrelative:private parts opinions\\opinionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,40 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "SituationalOpinionHelper.cs",
-              "DocumentMoniker": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Situational opinions\\SituationalOpinionHelper.cs",
-              "RelativeDocumentMoniker": "Situational opinions\\SituationalOpinionHelper.cs",
-              "ToolTip": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Situational opinions\\SituationalOpinionHelper.cs",
-              "RelativeToolTip": "Situational opinions\\SituationalOpinionHelper.cs",
-              "ViewState": "AgIAAHYDAAAAAAAAAAArwI0DAAARAAAAAAAAAA==",
+              "Title": "ITab_Pawn_NMMOpinions.cs",
+              "DocumentMoniker": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Tab related\\ITab_Pawn_NMMOpinions.cs",
+              "RelativeDocumentMoniker": "Tab related\\ITab_Pawn_NMMOpinions.cs",
+              "ToolTip": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Tab related\\ITab_Pawn_NMMOpinions.cs",
+              "RelativeToolTip": "Tab related\\ITab_Pawn_NMMOpinions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-23T20:14:15.29Z",
+              "WhenOpened": "2025-07-27T17:52:13.671Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "NMMFixationLogPatch.cs",
-              "DocumentMoniker": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Social log notification\\NMMFixationLogPatch.cs",
-              "RelativeDocumentMoniker": "Social log notification\\NMMFixationLogPatch.cs",
-              "ToolTip": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Social log notification\\NMMFixationLogPatch.cs",
-              "RelativeToolTip": "Social log notification\\NMMFixationLogPatch.cs",
-              "ViewState": "AgIAAO0AAAAAAAAAAADwvwEBAAAsAAAAAAAAAA==",
+              "Title": "OpinionHelper.cs",
+              "DocumentMoniker": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Private parts opinions\\OpinionHelper.cs",
+              "RelativeDocumentMoniker": "Private parts opinions\\OpinionHelper.cs",
+              "ToolTip": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Private parts opinions\\OpinionHelper.cs",
+              "RelativeToolTip": "Private parts opinions\\OpinionHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-23T17:46:36.588Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "NMMOpinionsMapComponent.cs",
-              "DocumentMoniker": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Situational opinions\\NMMOpinionsMapComponent.cs",
-              "RelativeDocumentMoniker": "Situational opinions\\NMMOpinionsMapComponent.cs",
-              "ToolTip": "C:\\Users\\shark\\Desktop\\NudityMattersMore_opinions\\NudityMattersMore_opinions\\Source\\Situational opinions\\NMMOpinionsMapComponent.cs",
-              "RelativeToolTip": "Situational opinions\\NMMOpinionsMapComponent.cs",
-              "ViewState": "AgIAAE8AAAAAAAAAAAAAwGMAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-22T21:05:39.327Z",
+              "WhenOpened": "2025-07-27T17:52:11.4Z",
               "EditorCaption": ""
             }
           ]
